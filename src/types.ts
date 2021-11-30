@@ -32,6 +32,11 @@ export interface SearchOptions {
    * @default process.cwd()
    */
   cwd?: string
+
+  /**
+   * @default path.parse(cwd).root
+   */
+  stopAt?: string
 }
 
 export interface LoadConfigOptions extends SearchOptions {
@@ -40,6 +45,5 @@ export interface LoadConfigOptions extends SearchOptions {
 
 export interface LoadConfigResult<T> {
   config: T
-  filepath: string
-  mtime: number
+  sources: string[]
 }

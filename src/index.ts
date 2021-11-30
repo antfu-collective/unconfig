@@ -1,8 +1,8 @@
 import { promises as fs } from 'fs'
-import findUp from 'find-up'
 import jiti from 'jiti'
 import { toArray } from '@antfu/utils'
 import { LoadConfigOptions, LoadConfigResult, LoadConfigSource, SearchOptions, defaultExtensions } from './types'
+import { findUp } from './fs'
 
 export * from './types'
 export * from './presets'
@@ -19,22 +19,20 @@ export async function loadConfig<T>(options?: LoadConfigOptions): Promise<LoadCo
 export async function loadConfigFromSource<T>(source: LoadConfigSource<T>, search: SearchOptions = {}): Promise<LoadConfigResult<T> | undefined> {
   const { extensions = defaultExtensions } = source
 
-  const files = toArray(source?.files || [])
+  const flatFiles = toArray(source?.files || []).flatMap((file) => {
+    return extensions.map(i => i ? `${file}.${i}` : file)
+  })
+
+  if (!flatFiles.length)
+    return undefined
+
+  const { cwd = process.cwd() } = search
+  const files = await findUp(flatFiles, { cwd, stopAt: search.stopAt })
 
   if (!files.length)
     return undefined
 
-  const flatFiles = files.flatMap((file) => {
-    return extensions.map(i => i ? `${file}.${i}` : file)
-  })
-
-  const { cwd = process.cwd() } = search
-  const file = await findUp(flatFiles, { cwd })
-
-  if (!file)
-    return undefined
-
-  return await loadConfigFile(file, source)
+  return await loadConfigFile(files[0], source)
 }
 
 async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>): Promise<LoadConfigResult<T> | undefined> {
@@ -78,11 +76,8 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
   if (!rewritten)
     return undefined
 
-  const mtime = (await fs.stat(filepath)).mtimeMs
-
   return {
-    filepath,
     config: rewritten,
-    mtime,
+    sources: [filepath],
   }
 }

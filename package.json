@@ -56,7 +56,6 @@
   "dependencies": {
     "@antfu/utils": "^0.3.0",
     "defu": "^5.0.0",
-    "find-up": "^5.0",
     "jiti": "^1.12.9"
   }
 }
