@@ -11,9 +11,14 @@ export * from './presets'
 export async function loadConfig<T>(options?: LoadConfigOptions): Promise<LoadConfigResult<T> | undefined> {
   const sources = toArray(options?.sources || [])
   for (const source of sources) {
-    const result = await loadConfigFromSource<T>(source, options)
-    if (result)
-      return result
+    try {
+      const result = await loadConfigFromSource<T>(source, options)
+      if (result)
+        return result
+    }
+    catch {
+      // TODO: add log ?
+    }
   }
 }
 
