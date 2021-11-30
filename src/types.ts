@@ -37,6 +37,13 @@ export interface SearchOptions {
    * @default path.parse(cwd).root
    */
   stopAt?: string
+
+  /**
+   * Load from multiple sources and merge them
+   *
+   * @default false
+   */
+  merge?: boolean
 }
 
 export interface LoadConfigOptions extends SearchOptions {

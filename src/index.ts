@@ -1,38 +1,56 @@
 import { promises as fs } from 'fs'
 import jiti from 'jiti'
-import { toArray } from '@antfu/utils'
-import { LoadConfigOptions, LoadConfigResult, LoadConfigSource, SearchOptions, defaultExtensions } from './types'
+import { notNullish, toArray } from '@antfu/utils'
+import defu from 'defu'
+import { LoadConfigOptions, LoadConfigResult, LoadConfigSource, defaultExtensions } from './types'
 import { findUp } from './fs'
 
 export * from './types'
 export * from './presets'
 
-export async function loadConfig<T>(options?: LoadConfigOptions): Promise<LoadConfigResult<T> | undefined> {
-  const sources = toArray(options?.sources || [])
+export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadConfigResult<T> | undefined> {
+  const sources = toArray(options.sources || [])
+  const {
+    cwd = process.cwd(),
+    merge,
+  } = options
+
+  const results: LoadConfigResult<any>[] = []
+
   for (const source of sources) {
-    const result = await loadConfigFromSource<T>(source, options)
-    if (result)
-      return result
+    const { extensions = defaultExtensions } = source
+
+    const flatTargets = toArray(source?.files || [])
+      .flatMap(file => extensions.map(i => i ? `${file}.${i}` : file))
+
+    if (!flatTargets.length)
+      continue
+
+    const files = await findUp(flatTargets, { cwd, stopAt: options.stopAt, multiple: merge })
+
+    if (!files.length)
+      continue
+
+    if (!merge) {
+      return await loadConfigFile(files[0], source)
+    }
+    else {
+      results.push(
+        ...(await Promise.all(
+          files.map(file => loadConfigFile(file, source)))
+        ).filter(notNullish),
+      )
+    }
   }
-}
 
-export async function loadConfigFromSource<T>(source: LoadConfigSource<T>, search: SearchOptions = {}): Promise<LoadConfigResult<T> | undefined> {
-  const { extensions = defaultExtensions } = source
+  if (!results.length)
+    return
 
-  const flatFiles = toArray(source?.files || []).flatMap((file) => {
-    return extensions.map(i => i ? `${file}.${i}` : file)
-  })
-
-  if (!flatFiles.length)
-    return undefined
-
-  const { cwd = process.cwd() } = search
-  const files = await findUp(flatFiles, { cwd, stopAt: search.stopAt })
-
-  if (!files.length)
-    return undefined
-
-  return await loadConfigFile(files[0], source)
+  return {
+    // @ts-expect-error
+    config: defu(...results.map(i => i.config)),
+    sources: results.map(i => i.sources).flat(),
+  }
 }
 
 async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>): Promise<LoadConfigResult<T> | undefined> {
