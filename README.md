@@ -39,7 +39,7 @@ const { config, filepath } = await loadConfig({
     {
       files: 'my.config',
       // default extensions
-      extensions: ['ts', 'mts', 'ctx', 'js', 'mjs', 'cjs', 'json', ''],
+      extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
     },
     // load `my` field in `package.json` if no above config files found
     {
@@ -61,6 +61,8 @@ const { config, filepath } = await loadConfig({
   ],
 })
 ```
+
+`unconfig` supports loading `ts`, `mjs`, `js`, `json` by default.
 
 ## Sponsors
 
