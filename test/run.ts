@@ -30,6 +30,10 @@ __unconfig_stub.default = (data) => { __unconfig_data = data };
     },
   ],
   cwd: resolve(__dirname, 'fixtures'),
+  defaults: {
+    defaults: 'default',
+    deep: { foo: 'hi' },
+  },
   merge: true,
 })
   .then(i => console.log(i))

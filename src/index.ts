@@ -9,11 +9,12 @@ import { findUp } from './fs'
 export * from './types'
 export * from './presets'
 
-export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadConfigResult<T> | undefined> {
+export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadConfigResult<T>> {
   const sources = toArray(options.sources || [])
   const {
     cwd = process.cwd(),
     merge,
+    defaults,
   } = options
 
   const results: LoadConfigResult<any>[] = []
@@ -37,8 +38,12 @@ export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadCon
 
     if (!merge) {
       const result = await loadConfigFile(files[0], source)
-      if (result)
-        return result
+      if (result) {
+        return {
+          config: defu(result.config, defaults),
+          sources: result.sources,
+        }
+      }
     }
     else {
       results.push(
@@ -49,12 +54,16 @@ export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadCon
     }
   }
 
-  if (!results.length)
-    return
+  if (!results.length) {
+    return {
+      config: defaults,
+      sources: [],
+    }
+  }
 
   return {
     // @ts-expect-error
-    config: defu(...results.map(i => i.config)),
+    config: defu(...results.map(i => i.config), defaults),
     sources: results.map(i => i.sources).flat(),
   }
 }

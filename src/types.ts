@@ -60,8 +60,9 @@ export interface SearchOptions {
   merge?: boolean
 }
 
-export interface LoadConfigOptions extends SearchOptions {
-  sources: Arrayable<LoadConfigSource>
+export interface LoadConfigOptions<T = any> extends SearchOptions {
+  sources: Arrayable<LoadConfigSource<T>>
+  defaults?: T
 }
 
 export interface LoadConfigResult<T> {
