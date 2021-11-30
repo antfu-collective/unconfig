@@ -55,7 +55,8 @@
   },
   "dependencies": {
     "@antfu/utils": "^0.3.0",
-    "bundle-require": "^2.1.8",
-    "find-up": "^5.0"
+    "defu": "^5.0.0",
+    "find-up": "^5.0",
+    "jiti": "^1.12.9"
   }
 }

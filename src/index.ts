@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs'
-import { resolve } from 'path'
 import findUp from 'find-up'
-import { bundleRequire } from 'bundle-require'
+import jiti from 'jiti'
 import { toArray } from '@antfu/utils'
 import { LoadConfigOptions, LoadConfigResult, LoadConfigSource, SearchOptions, defaultExtensions } from './types'
 
@@ -35,12 +34,11 @@ export async function loadConfigFromSource<T>(source: LoadConfigSource<T>, searc
   if (!file)
     return undefined
 
-  return await loadConfigFile(file, source, search)
+  return await loadConfigFile(file, source)
 }
 
-async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>, search: SearchOptions = {}): Promise<LoadConfigResult<T> | undefined> {
+async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>): Promise<LoadConfigResult<T> | undefined> {
   let config: T | undefined
-  let dependencies = [filepath]
 
   let loader = source.loader || 'auto'
 
@@ -60,15 +58,9 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>, 
 
   if (!config) {
     if (loader === 'bundle') {
-      const result = await bundleRequire({ filepath })
-
-      if (!result)
+      config = await jiti(undefined, { interopDefault: true })(filepath)
+      if (!config)
         return undefined
-
-      const { cwd = process.cwd() } = search
-
-      config = result.mod?.default || result.mod
-      dependencies = result.dependencies?.map(i => resolve(cwd, i))
     }
     else if (loader === 'json') {
       const content = await fs.readFile(filepath, 'utf-8')
@@ -91,7 +83,6 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>, 
   return {
     filepath,
     config: rewritten,
-    dependencies,
     mtime,
   }
 }

@@ -10,19 +10,21 @@ importers:
       '@types/jest': ^27.0.3
       '@types/node': ^16.11.10
       bumpp: ^7.1.1
-      bundle-require: ^2.1.8
+      defu: ^5.0.0
       eslint: ^8.3.0
       eslint-plugin-jest: ^25.3.0
       esno: ^0.12.1
       find-up: ^5.0
       jest: ^27.3.1
+      jiti: ^1.12.9
       ts-jest: ^27.0.7
       typescript: ^4.5.2
       unbuild: ^0.5.13
     dependencies:
       '@antfu/utils': 0.3.0
-      bundle-require: 2.1.8
+      defu: 5.0.0
       find-up: 5.0.0
+      jiti: 1.12.9
     devDependencies:
       '@antfu/eslint-config': 0.11.1_eslint@8.3.0+typescript@4.5.2
       '@antfu/ni': 0.11.0
@@ -1338,12 +1340,6 @@ packages:
       semver: 7.3.5
     dev: true
 
-  /bundle-require/2.1.8:
-    resolution: {integrity: sha512-oOEg3A0hy/YzvNWNowtKD0pmhZKseOFweCbgyMqTIih4gRY1nJWsvrOCT27L9NbIyL5jMjTFrAUpGxxpW68Puw==}
-    peerDependencies:
-      esbuild: '>=0.13'
-    dev: false
-
   /call-bind/1.0.2:
     resolution: {integrity: sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA==}
     dependencies:
@@ -1563,7 +1559,6 @@ packages:
 
   /defu/5.0.0:
     resolution: {integrity: sha512-VHg73EDeRXlu7oYWRmmrNp/nl7QkdXUxkQQKig0Zk8daNmm84AbGoC8Be6/VVLJEKxn12hR0UBmz8O+xQiAPKQ==}
-    dev: true
 
   /delayed-stream/1.0.0:
     resolution: {integrity: sha1-3zrhmayt+31ECqrgsp4icrJOxhk=}
@@ -3426,7 +3421,6 @@ packages:
   /jiti/1.12.9:
     resolution: {integrity: sha512-TdcJywkQtcwLxogc4rSMAi479G2eDPzfW0fLySks7TPhgZZ4s/tM6stnzayIh3gS/db3zExWJyUx4cNWrwAmoQ==}
     hasBin: true
-    dev: true
 
   /joycon/3.0.1:
     resolution: {integrity: sha512-SJcJNBg32dGgxhPtM0wQqxqV0ax9k/9TaUskGDSJkSFSQOEWWvQ3zzWdGQRIUry2j1zA5+ReH13t0Mf3StuVZA==}

@@ -41,6 +41,5 @@ export interface LoadConfigOptions extends SearchOptions {
 export interface LoadConfigResult<T> {
   config: T
   filepath: string
-  dependencies?: string[]
   mtime: number
 }
