@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/unconfig?color=a1b858&label=)](https://www.npmjs.com/package/unconfig)
 
-Universal solution for loading configuration.
+A universal solution for loading configurations.
 
 ## Why?
 

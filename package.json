@@ -1,8 +1,10 @@
 {
   "name": "unconfig",
   "version": "0.0.3",
-  "description": "Load config universally",
-  "keywords": [],
+  "description": "A universal solution for loading configurations.",
+  "keywords": [
+    "config"
+  ],
   "homepage": "https://github.com/antfu/unconfig#readme",
   "bugs": {
     "url": "https://github.com/antfu/unconfig/issues"
