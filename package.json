@@ -1,0 +1,55 @@
+{
+  "name": "unconfig",
+  "version": "0.0.0",
+  "description": "Load config universally",
+  "keywords": [],
+  "homepage": "https://github.com/antfu/unconfig#readme",
+  "bugs": {
+    "url": "https://github.com/antfu/unconfig/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antfu/unconfig.git"
+  },
+  "funding": "https://github.com/sponsors/antfu",
+  "license": "MIT",
+  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "prepublishOnly": "nr build",
+    "release": "bumpp --commit --push --tag && pnpm publish",
+    "start": "esno src/index.ts",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.11.1",
+    "@antfu/ni": "^0.11.0",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.10",
+    "bumpp": "^7.1.1",
+    "eslint": "^8.3.0",
+    "eslint-plugin-jest": "^25.3.0",
+    "esno": "^0.12.1",
+    "find-up": "^6.2.0",
+    "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.5.2",
+    "unbuild": "^0.5.13"
+  }
+}
