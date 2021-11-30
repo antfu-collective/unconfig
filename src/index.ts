@@ -51,7 +51,9 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>, 
       config = JSON.parse(content)
       loader = 'json'
     }
-    catch {}
+    catch {
+      loader = 'bundle'
+    }
   }
   else {
     loader = 'bundle'
@@ -79,7 +81,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>, 
     return
 
   const rewritten = source.rewrite
-    ? await source.rewrite(config, filepath, loader as ConfigLoaderType)
+    ? await source.rewrite(config, filepath, loader)
     : config
 
   if (!rewritten)
