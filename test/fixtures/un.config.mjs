@@ -1,3 +1,6 @@
 export default {
-  msg2: 'hello',
+  mjs: 'hi',
+  deep: {
+    foo: 'this should be override',
+  },
 }

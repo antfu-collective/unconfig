@@ -1,3 +1,6 @@
 export default {
-  msg: 'hello',
+  ts: 'hello',
+  deep: {
+    foo: 'you should get this',
+  },
 }

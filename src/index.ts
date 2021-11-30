@@ -21,7 +21,10 @@ export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadCon
     const { extensions = defaultExtensions } = source
 
     const flatTargets = toArray(source?.files || [])
-      .flatMap(file => extensions.map(i => i ? `${file}.${i}` : file))
+      .flatMap(file => !extensions.length
+        ? [file]
+        : extensions.map(i => i ? `${file}.${i}` : file),
+      )
 
     if (!flatTargets.length)
       continue
