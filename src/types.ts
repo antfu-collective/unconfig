@@ -1,10 +1,11 @@
+import { Arrayable } from '@antfu/utils'
 
 export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json', '']
 
 export type ConfigLoaderType = 'bundle' | 'json'
 
 export interface LoadConfigSource<T = any> {
-  files: string[]
+  files: Arrayable<string>
 
   /**
    * @default ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json', '']
@@ -34,7 +35,7 @@ export interface SearchOptions {
 }
 
 export interface LoadConfigOptions extends SearchOptions {
-  sources: LoadConfigSource[]
+  sources: Arrayable<LoadConfigSource>
 }
 
 export interface LoadConfigResult<T> {

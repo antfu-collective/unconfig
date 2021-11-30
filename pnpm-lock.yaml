@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@antfu/eslint-config': ^0.11.1
       '@antfu/ni': ^0.11.0
+      '@antfu/utils': ^0.3.0
       '@types/jest': ^27.0.3
       '@types/node': ^16.11.10
       bumpp: ^7.1.1
@@ -19,6 +20,7 @@ importers:
       typescript: ^4.5.2
       unbuild: ^0.5.13
     dependencies:
+      '@antfu/utils': 0.3.0
       bundle-require: 2.1.8
       find-up: 5.0.0
     devDependencies:
@@ -130,6 +132,12 @@ packages:
     resolution: {integrity: sha512-+Iep4kXORK9tTr+ZYWln2H1LO3YHRgHKnafiWxXokLV5nE6U7hY1NyVjBVyhYU7TJIAskE4sZmvgZznzuHo2lg==}
     hasBin: true
     dev: true
+
+  /@antfu/utils/0.3.0:
+    resolution: {integrity: sha512-UU8TLr/EoXdg7OjMp0h9oDoIAVr+Z/oW9cpOxQQyrsz6Qzd2ms/1CdWx8fl2OQdFpxGmq5Vc4TwfLHId6nAZjA==}
+    dependencies:
+      '@types/throttle-debounce': 2.1.0
+    dev: false
 
   /@babel/code-frame/7.12.13:
     resolution: {integrity: sha512-HV1Cm0Q3ZrpCR93tkWOYiuYIgLxZXZFVG2VgK+MBWjUqZTundupbfx2aXarXuw5Ko5aMcjtJgbSs4vUGBS5v6g==}
@@ -922,6 +930,10 @@ packages:
   /@types/stack-utils/2.0.0:
     resolution: {integrity: sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==}
     dev: true
+
+  /@types/throttle-debounce/2.1.0:
+    resolution: {integrity: sha512-5eQEtSCoESnh2FsiLTxE121IiE60hnMqcb435fShf4bpLRjEu1Eoekht23y6zXS9Ts3l+Szu3TARnTsA0GkOkQ==}
+    dev: false
 
   /@types/yargs-parser/20.2.0:
     resolution: {integrity: sha512-37RSHht+gzzgYeobbG+KWryeAW8J33Nhr69cjTqSYymXVZEN9NbRYWoYlRtDhHKPVT1FyNKwaTPC1NynKZpzRA==}

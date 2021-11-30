@@ -52,7 +52,8 @@
     "unbuild": "^0.5.13"
   },
   "dependencies": {
-    "find-up": "^5.0",
-    "bundle-require": "^2.1.8"
+    "@antfu/utils": "^0.3.0",
+    "bundle-require": "^2.1.8",
+    "find-up": "^5.0"
   }
 }

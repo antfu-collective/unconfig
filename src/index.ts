@@ -2,13 +2,14 @@ import { promises as fs } from 'fs'
 import { resolve } from 'path'
 import findUp from 'find-up'
 import { bundleRequire } from 'bundle-require'
-import { LoadConfigOptions, LoadConfigResult, LoadConfigSource, SearchOptions, defaultExtensions, ConfigLoaderType } from './types'
+import { toArray } from '@antfu/utils'
+import { LoadConfigOptions, LoadConfigResult, LoadConfigSource, SearchOptions, defaultExtensions } from './types'
 
 export * from './types'
 export * from './presets'
 
 export async function loadConfig<T>(options?: LoadConfigOptions): Promise<LoadConfigResult<T> | undefined> {
-  const { sources = [] } = options || {}
+  const sources = toArray(options?.sources || [])
   for (const source of sources) {
     const result = await loadConfigFromSource<T>(source, options)
     if (result)
@@ -17,12 +18,9 @@ export async function loadConfig<T>(options?: LoadConfigOptions): Promise<LoadCo
 }
 
 export async function loadConfigFromSource<T>(source: LoadConfigSource<T>, search: SearchOptions = {}): Promise<LoadConfigResult<T> | undefined> {
-  const {
-    files = [],
-    extensions = defaultExtensions,
-  } = source
+  const { extensions = defaultExtensions } = source
 
-  const { cwd = process.cwd() } = search
+  const files = toArray(source?.files || [])
 
   if (!files.length)
     return undefined
@@ -31,6 +29,7 @@ export async function loadConfigFromSource<T>(source: LoadConfigSource<T>, searc
     return extensions.map(i => i ? `${file}.${i}` : file)
   })
 
+  const { cwd = process.cwd() } = search
   const file = await findUp(flatFiles, { cwd })
 
   if (!file)

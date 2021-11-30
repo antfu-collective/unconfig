@@ -1,64 +1,60 @@
+import { toArray, Arrayable } from '@antfu/utils'
 import { LoadConfigSource } from './types'
 
-export interface LoadVitePluginConfigOptions {
-  pluginNames: string[]
+export interface SourceVitePluginConfigOptions {
+  plugins: Arrayable<string>
 }
 
-export interface LoadObjectFieldOptions {
-  fields: string[]
+export interface SourceObjectFieldOptions {
+  fields: Arrayable<string>
 }
 
-export function loadVitePluginConfig(options: LoadVitePluginConfigOptions): LoadConfigSource {
+export function sourceVitePluginConfig(options: SourceVitePluginConfigOptions): LoadConfigSource {
+  const plugins = toArray(options.plugins)
   return {
     files: ['vite.config'],
     async rewrite(obj) {
       const config = await (typeof obj === 'function' ? obj() : obj)
       if (!config)
         return config
-      return config.plugins.find((i: any) => options.pluginNames.includes(i.name) && i?.api?.config)?.api?.config
+      return config.plugins.find((i: any) => plugins.includes(i.name) && i?.api?.config)?.api?.config
     },
   }
 }
 
-export function loadViteConfigFields(options: LoadObjectFieldOptions): LoadConfigSource {
+export function sourceViteConfigFields(options: SourceObjectFieldOptions): LoadConfigSource {
   return {
     files: ['vite.config'],
-    async rewrite(obj) {
-      const config = await (typeof obj === 'function' ? obj() : obj)
-      if (!config)
-        return config
-      for (const field of options.fields) {
-        if (field in config)
-          return config[field]
-      }
-    },
+    ...rewriteFields(options),
   }
 }
 
-export function loadNuxtConfigFields(options: LoadObjectFieldOptions): LoadConfigSource {
+export function sourceNuxtConfigFields(options: SourceObjectFieldOptions): LoadConfigSource {
   return {
     files: ['nuxt.config'],
-    async rewrite(obj) {
-      const config = await (typeof obj === 'function' ? obj() : obj)
-      if (!config)
-        return config
-      for (const field of options.fields) {
-        if (field in config)
-          return config[field]
-      }
-    },
+    ...rewriteFields(options),
   }
 }
 
-export function loadPackageJsonFields(options: LoadObjectFieldOptions): LoadConfigSource {
+export function sourcePackageJsonFields(options: SourceObjectFieldOptions): LoadConfigSource {
   return {
     files: ['package.json'],
     extensions: [],
     loader: 'json',
-    rewrite(obj: any) {
-      for (const field of options.fields) {
-        if (field in obj)
-          return obj[field]
+    ...rewriteFields(options),
+  }
+}
+
+function rewriteFields(options: SourceObjectFieldOptions): Pick<LoadConfigSource, 'rewrite'> {
+  const fields = toArray(options.fields)
+  return {
+    async rewrite(obj) {
+      const config = await (typeof obj === 'function' ? obj() : obj)
+      if (!config)
+        return config
+      for (const field of fields) {
+        if (field in config)
+          return config[field]
       }
     },
   }
