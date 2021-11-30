@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`load 1`] = `
+Object {
+  "deep": Object {
+    "foo": "you should get this",
+  },
+  "defaults": "default",
+  "from": "package.json",
+  "json": "allo",
+  "mjs": "hi",
+  "rewrite": "Hi",
+  "ts": "hello",
+}
+`;
+
+exports[`load: files 1`] = `5`;
