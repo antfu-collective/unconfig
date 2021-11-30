@@ -1,4 +1,5 @@
 import { promises as fs } from 'fs'
+import { dirname, basename, join } from 'path'
 import jiti from 'jiti'
 import { notNullish, toArray } from '@antfu/utils'
 import defu from 'defu'
@@ -63,10 +64,27 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
 
   let loader = source.loader || 'auto'
 
+  let bundleFilepath = filepath
+  let code: string | undefined
+
+  async function read() {
+    if (code == null)
+      code = await fs.readFile(filepath, 'utf-8')
+    return code
+  }
+
+  if (source.transform) {
+    const transformed = await source.transform(await read(), filepath)
+    if (transformed) {
+      bundleFilepath = join(dirname(filepath), `__unconfig_${basename(filepath)}`)
+      await fs.writeFile(bundleFilepath, transformed, 'utf-8')
+      code = transformed
+    }
+  }
+
   if (loader === 'auto') {
-    const content = await fs.readFile(filepath, 'utf-8')
     try {
-      config = JSON.parse(content)
+      config = JSON.parse(await read())
       loader = 'json'
     }
     catch {
@@ -80,13 +98,12 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
   try {
     if (!config) {
       if (loader === 'bundle') {
-        config = await jiti(undefined, { interopDefault: true })(filepath)
+        config = await jiti(undefined, { interopDefault: true })(bundleFilepath)
         if (!config)
           return undefined
       }
       else if (loader === 'json') {
-        const content = await fs.readFile(filepath, 'utf-8')
-        config = JSON.parse(content)
+        config = JSON.parse(await read())
       }
     }
 
@@ -109,5 +126,9 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
     if (source.skipOnError)
       return
     throw e
+  }
+  finally {
+    if (bundleFilepath !== filepath)
+      await fs.unlink(bundleFilepath)
   }
 }

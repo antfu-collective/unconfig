@@ -20,9 +20,16 @@ export interface LoadConfigSource<T = any> {
   loader?: ConfigLoaderType | 'auto'
 
   /**
-   * Rewrite the config object
+   * Rewrite the config object,
+   * return nullish value to bypassing loading the file
    */
   rewrite?: <F = any>(obj: F, filepath: string, loader: ConfigLoaderType) => Promise<T | undefined> | T | undefined
+
+  /**
+   * Transform the source code before loading,
+   * return nullish value to skip transformation
+   */
+  transform?: (code: string, filepath: string) => Promise<string | undefined> | string | undefined
 
   /**
    * Skip this source if error occurred on loading
