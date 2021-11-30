@@ -11,10 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v2.0.1
-      #   with:
-      #     version: 6.15.1
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
 
       - name: Set node version
         uses: actions/setup-node@v2
