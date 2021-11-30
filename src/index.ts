@@ -35,7 +35,9 @@ export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadCon
       continue
 
     if (!merge) {
-      return await loadConfigFile(files[0], source)
+      const result = await loadConfigFile(files[0], source)
+      if (result)
+        return result
     }
     else {
       results.push(
@@ -75,30 +77,37 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
     loader = 'bundle'
   }
 
-  if (!config) {
-    if (loader === 'bundle') {
-      config = await jiti(undefined, { interopDefault: true })(filepath)
-      if (!config)
-        return undefined
+  try {
+    if (!config) {
+      if (loader === 'bundle') {
+        config = await jiti(undefined, { interopDefault: true })(filepath)
+        if (!config)
+          return undefined
+      }
+      else if (loader === 'json') {
+        const content = await fs.readFile(filepath, 'utf-8')
+        config = JSON.parse(content)
+      }
     }
-    else if (loader === 'json') {
-      const content = await fs.readFile(filepath, 'utf-8')
-      config = JSON.parse(content)
+
+    if (!config)
+      return
+
+    const rewritten = source.rewrite
+      ? await source.rewrite(config, filepath, loader)
+      : config
+
+    if (!rewritten)
+      return undefined
+
+    return {
+      config: rewritten,
+      sources: [filepath],
     }
   }
-
-  if (!config)
-    return
-
-  const rewritten = source.rewrite
-    ? await source.rewrite(config, filepath, loader)
-    : config
-
-  if (!rewritten)
-    return undefined
-
-  return {
-    config: rewritten,
-    sources: [filepath],
+  catch (e) {
+    if (source.skipOnError)
+      return
+    throw e
   }
 }

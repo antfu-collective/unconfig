@@ -23,6 +23,13 @@ export interface LoadConfigSource<T = any> {
    * Rewrite the config object
    */
   rewrite?: <F = any>(obj: F, filepath: string, loader: ConfigLoaderType) => Promise<T | undefined> | T | undefined
+
+  /**
+   * Skip this source if error occurred on loading
+   *
+   * @default false
+   */
+  skipOnError?: boolean
 }
 
 export interface SearchOptions {
