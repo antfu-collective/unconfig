@@ -34,6 +34,7 @@ For example, to load config for `my.config`:
 import { loadConfig } from 'unconfig'
 
 const { config, filepath } = await loadConfig({
+  // the first success read will be returned, no merge among sources will be done.
   sources: [
     // load from `unocss.config.xx`
     {
