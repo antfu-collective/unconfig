@@ -22,6 +22,11 @@
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
+    },
+    "./presets": {
+      "require": "./dist/presets.cjs",
+      "import": "./dist/presets.mjs",
+      "types": "./dist/presets.d.ts"
     }
   },
   "main": "./dist/index.cjs",

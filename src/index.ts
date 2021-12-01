@@ -7,7 +7,6 @@ import { LoadConfigOptions, LoadConfigResult, LoadConfigSource, defaultExtension
 import { findUp } from './fs'
 
 export * from './types'
-export * from './presets'
 
 export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadConfigResult<T>> {
   const sources = toArray(options.sources || [])

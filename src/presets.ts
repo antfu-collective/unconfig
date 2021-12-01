@@ -5,8 +5,36 @@ export interface SourceVitePluginConfigOptions {
   plugins: Arrayable<string>
 }
 
-export interface SourceObjectFieldOptions {
+export interface SourceObjectFieldOptions extends Omit<LoadConfigSource, 'rewrite'> {
   fields: Arrayable<string>
+}
+
+export interface SourcePluginFactoryOptions extends Omit<LoadConfigSource, 'transform'>{
+  targetModule: string
+}
+
+/**
+ * Retwrite the config file and extract the options passed to plugin factory
+ * (e.g. Vite and Rollup plugins)
+ */
+export function sourcePluginFactory(options: SourcePluginFactoryOptions) {
+  return {
+    ...options,
+    transform: (source: string) => {
+      const prefix = `
+let __unconfig_data;
+let __unconfig_stub = function (data) { __unconfig_data = data };
+__unconfig_stub.default = (data) => { __unconfig_data = data };
+`
+      const suffix = 'export default __unconfig_data;'
+      let code = source
+        .replace(new RegExp(`import (.+?) from (['"])${options.targetModule}\\2`), 'const $1 = __unconfig_stub;')
+        .replace('export default', 'const __unconfig_default = ')
+      if (code.includes('__unconfig_default'))
+        code += '\nif (typeof __unconfig_default === "function") __unconfig_default();'
+      return `${prefix}${code}${suffix}`
+    },
+  }
 }
 
 export function sourceVitePluginConfig(options: SourceVitePluginConfigOptions): LoadConfigSource {
@@ -22,32 +50,13 @@ export function sourceVitePluginConfig(options: SourceVitePluginConfigOptions): 
   }
 }
 
-export function sourceViteConfigFields(options: SourceObjectFieldOptions): LoadConfigSource {
-  return {
-    files: ['vite.config'],
-    ...rewriteFields(options),
-  }
-}
-
-export function sourceNuxtConfigFields(options: SourceObjectFieldOptions): LoadConfigSource {
-  return {
-    files: ['nuxt.config'],
-    ...rewriteFields(options),
-  }
-}
-
-export function sourcePackageJsonFields(options: SourceObjectFieldOptions): LoadConfigSource {
-  return {
-    files: ['package.json'],
-    extensions: [],
-    loader: 'json',
-    ...rewriteFields(options),
-  }
-}
-
-function rewriteFields(options: SourceObjectFieldOptions): Pick<LoadConfigSource, 'rewrite'> {
+/**
+ * Get one field of the config object
+ */
+export function sourceObjectFields(options: SourceObjectFieldOptions): LoadConfigSource {
   const fields = toArray(options.fields)
   return {
+    ...options,
     async rewrite(obj) {
       const config = await (typeof obj === 'function' ? obj() : obj)
       if (!config)
@@ -58,4 +67,16 @@ function rewriteFields(options: SourceObjectFieldOptions): Pick<LoadConfigSource
       }
     },
   }
+}
+
+/**
+ * Get one field of `package.json`
+ */
+export function sourcePackageJsonFields(options: Pick<SourceObjectFieldOptions, 'fields'>): LoadConfigSource {
+  return sourceObjectFields({
+    files: ['package.json'],
+    extensions: [],
+    loader: 'json',
+    fields: options.fields,
+  })
 }
