@@ -17,7 +17,7 @@ export interface LoadConfigSource<T = any> {
    *
    * @default 'auto'
    */
-  loader?: ConfigLoaderType | 'auto'
+  parser?: ConfigLoaderType | 'auto'
 
   /**
    * Rewrite the config object,

@@ -94,7 +94,7 @@ export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadCon
 async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>): Promise<LoadConfigResult<T> | undefined> {
   let config: T | undefined
 
-  let loader = source.loader || 'auto'
+  let loader = source.parser || 'auto'
 
   let bundleFilepath = filepath
   let code: string | undefined

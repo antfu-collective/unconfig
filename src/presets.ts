@@ -76,7 +76,7 @@ export function sourcePackageJsonFields(options: Pick<SourceObjectFieldOptions, 
   return sourceObjectFields({
     files: ['package.json'],
     extensions: [],
-    loader: 'json',
+    parser: 'json',
     fields: options.fields,
   })
 }
