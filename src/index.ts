@@ -94,7 +94,7 @@ export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadCon
 async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>): Promise<LoadConfigResult<T> | undefined> {
   let config: T | undefined
 
-  let loader = source.parser || 'auto'
+  let parser = source.parser || 'auto'
 
   let bundleFilepath = filepath
   let code: string | undefined
@@ -114,36 +114,31 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
     }
   }
 
-  if (loader === 'auto') {
+  if (parser === 'auto') {
     try {
       config = JSON.parse(await read())
-      loader = 'json'
+      parser = 'json'
     }
     catch {
-      loader = 'bundle'
+      parser = 'require'
     }
-  }
-  else {
-    loader = 'bundle'
   }
 
   try {
     if (!config) {
-      if (loader === 'bundle') {
+      if (typeof parser === 'function')
+        config = await parser(filepath)
+      else if (parser === 'require')
         config = await jiti(undefined, { interopDefault: true, cache: false, requireCache: false, v8cache: false })(bundleFilepath)
-        if (!config)
-          return undefined
-      }
-      else if (loader === 'json') {
+      else if (parser === 'json')
         config = JSON.parse(await read())
-      }
     }
 
     if (!config)
       return
 
     const rewritten = source.rewrite
-      ? await source.rewrite(config, filepath, loader)
+      ? await source.rewrite(config, filepath)
       : config
 
     if (!rewritten)

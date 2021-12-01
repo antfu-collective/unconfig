@@ -1,8 +1,10 @@
-import { Arrayable } from '@antfu/utils'
+import { Arrayable, Awaitable } from '@antfu/utils'
 
 export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json', '']
 
-export type ConfigLoaderType = 'bundle' | 'json'
+export type BuiltinParsers = 'require' | 'json'
+
+export type CustomParser<T> = (filepath: string) => Awaitable<T |undefined>
 
 export interface LoadConfigSource<T = any> {
   files: Arrayable<string>
@@ -17,13 +19,13 @@ export interface LoadConfigSource<T = any> {
    *
    * @default 'auto'
    */
-  parser?: ConfigLoaderType | 'auto'
+  parser?: BuiltinParsers | CustomParser<T> | 'auto'
 
   /**
    * Rewrite the config object,
    * return nullish value to bypassing loading the file
    */
-  rewrite?: <F = any>(obj: F, filepath: string, loader: ConfigLoaderType) => Promise<T | undefined> | T | undefined
+  rewrite?: <F = any>(obj: F, filepath: string) => Promise<T | undefined> | T | undefined
 
   /**
    * Transform the source code before loading,
