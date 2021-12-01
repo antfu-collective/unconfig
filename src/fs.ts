@@ -1,5 +1,5 @@
 import fs, { constants, promises as fsp } from 'fs'
-import { parse, dirname, join } from 'path'
+import { parse, dirname, resolve } from 'path'
 
 export interface FindUpOptions {
   /**
@@ -46,7 +46,7 @@ export async function findUp(paths: string[], options: FindUpOptions = {}): Prom
 
   while (current && current !== stopAt) {
     for (const path of paths) {
-      const filepath = join(current, path)
+      const filepath = resolve(current, path)
       if (existsSync(filepath) && (await stat(filepath)).isFile()) {
         files.push(filepath)
         if (!multiple)
