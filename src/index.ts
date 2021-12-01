@@ -130,7 +130,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
   try {
     if (!config) {
       if (loader === 'bundle') {
-        config = await jiti(undefined, { interopDefault: true })(bundleFilepath)
+        config = await jiti(undefined, { interopDefault: true, cache: false, requireCache: false, v8cache: false })(bundleFilepath)
         if (!config)
           return undefined
       }
