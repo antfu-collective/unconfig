@@ -8,7 +8,7 @@ import { findUp } from './fs'
 
 export * from './types'
 
-export function createConfigLoader(options: LoadConfigOptions) {
+export function createConfigLoader<T>(options: LoadConfigOptions) {
   const sources = toArray(options.sources || [])
   const {
     cwd = process.cwd(),
@@ -16,7 +16,7 @@ export function createConfigLoader(options: LoadConfigOptions) {
     defaults,
   } = options
 
-  const results: LoadConfigResult<any>[] = []
+  const results: LoadConfigResult<T>[] = []
   let matchedFiles: [LoadConfigSource, string[]][] | undefined
 
   async function findConfigs() {
@@ -41,7 +41,7 @@ export function createConfigLoader(options: LoadConfigOptions) {
     return matchedFiles.flatMap(i => i[1])
   }
 
-  async function load(force = false) {
+  async function load(force = false): Promise<LoadConfigResult<T>> {
     if (matchedFiles == null || force)
       await findConfigs()
 
@@ -88,7 +88,7 @@ export function createConfigLoader(options: LoadConfigOptions) {
 }
 
 export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadConfigResult<T>> {
-  return createConfigLoader(options).load()
+  return createConfigLoader<T>(options).load()
 }
 
 async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>): Promise<LoadConfigResult<T> | undefined> {
