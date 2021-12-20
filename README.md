@@ -49,9 +49,9 @@ const { config, filepath } = await loadConfig({
         return config?.my
       },
     },
-    // load inline config from `nuxt.config`
-     {
-      files: 'nuxt.config',
+    // load inline config from `vite.config`
+    {
+      files: 'vite.config',
       async rewrite(config) {
         const config = await (typeof config === 'function' ? config() : config)
         return config?.my
