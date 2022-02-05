@@ -1,9 +1,10 @@
 import { promises as fs } from 'fs'
-import { dirname, basename, join } from 'path'
+import { basename, dirname, join } from 'path'
 import jiti from 'jiti'
 import { notNullish, toArray } from '@antfu/utils'
 import defu from 'defu'
-import { LoadConfigOptions, LoadConfigResult, LoadConfigSource, defaultExtensions } from './types'
+import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
+import { defaultExtensions } from './types'
 import { findUp } from './fs'
 
 export * from './types'
@@ -75,7 +76,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
     }
 
     return {
-      // @ts-expect-error
+      // @ts-expect-error cast
       config: defu(...results.map(i => i.config), defaults),
       sources: results.map(i => i.sources).flat(),
     }
@@ -126,12 +127,21 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
 
   try {
     if (!config) {
-      if (typeof parser === 'function')
+      if (typeof parser === 'function') {
         config = await parser(filepath)
-      else if (parser === 'require')
-        config = await jiti(undefined, { interopDefault: true, cache: false, requireCache: false, v8cache: false })(bundleFilepath)
-      else if (parser === 'json')
+      }
+      else if (parser === 'require') {
+        config = await jiti(filepath, {
+          interopDefault: true,
+          cache: false,
+          requireCache: false,
+          v8cache: false,
+          esmResolve: true,
+        })(bundleFilepath)
+      }
+      else if (parser === 'json') {
         config = JSON.parse(await read())
+      }
     }
 
     if (!config)
