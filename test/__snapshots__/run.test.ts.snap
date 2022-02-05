@@ -1,8 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
+
+exports[`load > files 1`] = `5`;
 
 exports[`load 1`] = `
-Object {
-  "deep": Object {
+{
+  "deep": {
     "foo": "you should get this",
   },
   "defaults": "default",
@@ -13,5 +15,3 @@ Object {
   "ts": "hello",
 }
 `;
-
-exports[`load: files 1`] = `5`;

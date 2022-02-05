@@ -1,4 +1,5 @@
 import { resolve } from 'path'
+import { expect, it } from 'vitest'
 import { loadConfig } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
