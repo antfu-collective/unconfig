@@ -6,7 +6,7 @@ A universal solution for loading configurations.
 
 ## Why?
 
-Configuration is hard, especially when you want to build an ecosystem of your tools. 
+Configuration is hard, especially when you want to build an ecosystem of your tools.
 
 You want your tools to be general and easy to use, you allow you config to be defined in a custom field of `package.json`.
 
@@ -33,7 +33,7 @@ For example, to load config for `my.config`:
 ```js
 import { loadConfig } from 'unconfig'
 
-const { config, filepath } = await loadConfig({
+const { config, sources } = await loadConfig({
   sources: [
     // load from `unocss.config.xx`
     {
