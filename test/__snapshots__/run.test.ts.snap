@@ -1,17 +1,58 @@
 // Vitest Snapshot v1
 
-exports[`load > files 1`] = `5`;
-
-exports[`load 1`] = `
+exports[`loads the given sources > config 1`] = `
 {
   "deep": {
     "foo": "you should get this",
   },
   "defaults": "default",
   "from": "package.json",
+  "importValue": "uwu",
   "json": "allo",
   "mjs": "hi",
   "rewrite": "Hi",
   "ts": "hello",
 }
+`;
+
+exports[`loads the given sources > files 1`] = `5`;
+
+exports[`loads the given sources > sources 1`] = `
+[
+  "\\"use strict\\";Object.defineProperty(exports, \\"__esModule\\", { value: true });exports.default = void 0;var _file = require(\\"./file\\");var _default =
+
+{
+  ts: 'hello',
+  deep: {
+    foo: 'you should get this' },
+
+  importValue: _file.value };exports.default = _default;",
+  "\\"use strict\\";Object.defineProperty(exports, \\"__esModule\\", { value: true });exports.default = void 0;var _default = {
+  mjs: 'hi',
+  deep: {
+    foo: 'this should be override' } };exports.default = _default;",
+  "{
+  \\"json\\": \\"allo\\"
+}
+",
+  "{
+  \\"un\\": {
+    \\"from\\": \\"package.json\\"
+  }
+}
+",
+  "\\"use strict\\";Object.defineProperty(exports, \\"__esModule\\", { value: true });exports.default = void 0;
+let __unconfig_data;
+let __unconfig_stub = function (data) {__unconfig_data = data;};
+__unconfig_stub.default = (data) => {__unconfig_data = data;};
+const a = __unconfig_stub;
+
+const __unconfig_default = () => {
+  return a({
+    rewrite: 'Hi' });
+
+};
+
+if (typeof __unconfig_default === \\"function\\") __unconfig_default();var _default = __unconfig_data;exports.default = _default;",
+]
 `;

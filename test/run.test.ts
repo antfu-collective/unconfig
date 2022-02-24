@@ -3,7 +3,7 @@ import { expect, it } from 'vitest'
 import { loadConfig } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
-it('load', async() => {
+it('loads the given sources', async() => {
   const result = await loadConfig({
     sources: [
       {
@@ -26,6 +26,7 @@ it('load', async() => {
     merge: true,
   })
 
-  expect(result.config).toMatchSnapshot()
+  expect(result.config).toMatchSnapshot('config')
   expect(result.sources.length).toMatchSnapshot('files')
+  expect(result.sources.map(({ source }) => source)).toMatchSnapshot('sources')
 })

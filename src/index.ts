@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs'
 import { basename, dirname, join } from 'path'
-import jiti from 'jiti'
+import createJiti from 'jiti'
 import { notNullish, toArray } from '@antfu/utils'
 import defu from 'defu'
 import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
@@ -131,13 +131,17 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
         config = await parser(filepath)
       }
       else if (parser === 'require') {
-        config = await jiti(filepath, {
+        const jiti = createJiti(filepath, {
           interopDefault: true,
           cache: false,
           requireCache: false,
           v8cache: false,
           esmResolve: true,
-        })(bundleFilepath)
+        })
+
+        // Cached by jiti, it doesn't transform twice
+        code = jiti.transform({ filename: bundleFilepath, source: code ?? '' })
+        config = await jiti(bundleFilepath)
       }
       else if (parser === 'json') {
         config = JSON.parse(await read())
@@ -156,7 +160,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
 
     return {
       config: rewritten,
-      sources: [filepath],
+      sources: [{ filepath, source: code }],
     }
   }
   catch (e) {

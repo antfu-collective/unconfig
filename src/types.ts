@@ -69,5 +69,10 @@ export interface LoadConfigOptions<T = any> extends SearchOptions {
 
 export interface LoadConfigResult<T> {
   config: T
-  sources: string[]
+  sources: Source[]
+}
+
+export interface Source {
+  filepath: string
+  source?: string
 }
