@@ -1,4 +1,4 @@
-import { Arrayable, Awaitable } from '@antfu/utils'
+import type { Arrayable, Awaitable } from '@antfu/utils'
 
 export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json', '']
 
