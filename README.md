@@ -35,7 +35,7 @@ import { loadConfig } from 'unconfig'
 
 const { config, sources } = await loadConfig({
   sources: [
-    // load from `unocss.config.xx`
+    // load from `my.config.xx`
     {
       files: 'my.config',
       // default extensions
