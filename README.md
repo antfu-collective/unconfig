@@ -61,7 +61,7 @@ const { config, sources } = await loadConfig({
   ],
   // if false, the only the first matched will be loaded
   // if true, all matched will be loaded and deep merged
-  merge: false
+  merge: false,
 })
 ```
 
