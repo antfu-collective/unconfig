@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`load > files 1`] = `5`;
+exports[`load > files 1`] = `6`;
 
 exports[`load 1`] = `
 {
@@ -11,6 +11,7 @@ exports[`load 1`] = `
   "from": "package.json",
   "json": "allo",
   "mjs": "hi",
+  "param1": "include me",
   "rewrite": "Hi",
   "ts": "hello",
 }

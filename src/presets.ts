@@ -4,18 +4,30 @@ import type { LoadConfigSource } from './types'
 
 export interface SourceVitePluginConfigOptions {
   plugins: Arrayable<string>
+  /**
+   * Parameters that passed to when the default export is a function
+   */
+  parameters?: any[]
 }
 
 export interface SourceObjectFieldOptions extends Omit<LoadConfigSource, 'rewrite'> {
   fields: Arrayable<string>
+  /**
+   * Parameters that passed to when the default export is a function
+   */
+  parameters?: any[]
 }
 
 export interface SourcePluginFactoryOptions extends Omit<LoadConfigSource, 'transform'>{
   targetModule: string
+  /**
+   * Parameters that passed to when the default export is a function
+   */
+  parameters?: any[]
 }
 
 /**
- * Retwrite the config file and extract the options passed to plugin factory
+ * Rewrite the config file and extract the options passed to plugin factory
  * (e.g. Vite and Rollup plugins)
  */
 export function sourcePluginFactory(options: SourcePluginFactoryOptions) {
@@ -32,7 +44,7 @@ __unconfig_stub.default = (data) => { __unconfig_data = data };
         .replace(new RegExp(`import (.+?) from (['"])${options.targetModule}\\2`), 'const $1 = __unconfig_stub;')
         .replace('export default', 'const __unconfig_default = ')
       if (code.includes('__unconfig_default'))
-        code += '\nif (typeof __unconfig_default === "function") __unconfig_default();'
+        code += `\nif (typeof __unconfig_default === "function") __unconfig_default(...${JSON.stringify(options.parameters || [])});`
       return `${prefix}${code}${suffix}`
     },
   }
@@ -43,7 +55,7 @@ export function sourceVitePluginConfig(options: SourceVitePluginConfigOptions): 
   return {
     files: ['vite.config'],
     async rewrite(obj) {
-      const config = await (typeof obj === 'function' ? obj() : obj)
+      const config = await (typeof obj === 'function' ? obj(...options.parameters || [{ env: {} }, {}]) : obj)
       if (!config)
         return config
       return config.plugins.find((i: any) => plugins.includes(i.name) && i?.api?.config)?.api?.config
@@ -59,7 +71,7 @@ export function sourceObjectFields(options: SourceObjectFieldOptions): LoadConfi
   return {
     ...options,
     async rewrite(obj) {
-      const config = await (typeof obj === 'function' ? obj() : obj)
+      const config = await (typeof obj === 'function' ? obj(...options.parameters || []) : obj)
       if (!config)
         return config
       for (const field of fields) {
