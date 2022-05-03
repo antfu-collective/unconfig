@@ -1,6 +1,6 @@
 {
   "name": "unconfig",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "packageManager": "pnpm@7.0.0",
   "description": "A universal solution for loading configurations.",
   "keywords": [
