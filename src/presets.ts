@@ -4,10 +4,18 @@ import type { LoadConfigSource } from './types'
 
 export interface SourceVitePluginConfigOptions {
   plugins: Arrayable<string>
+  /**
+   * Parameters that passed to when the default export is a function
+   */
+  parameters?: any[]
 }
 
 export interface SourceObjectFieldOptions extends Omit<LoadConfigSource, 'rewrite'> {
   fields: Arrayable<string>
+  /**
+   * Parameters that passed to when the default export is a function
+   */
+  parameters?: any[]
 }
 
 export interface SourcePluginFactoryOptions extends Omit<LoadConfigSource, 'transform'>{
@@ -47,7 +55,7 @@ export function sourceVitePluginConfig(options: SourceVitePluginConfigOptions): 
   return {
     files: ['vite.config'],
     async rewrite(obj) {
-      const config = await (typeof obj === 'function' ? obj() : obj)
+      const config = await (typeof obj === 'function' ? obj(...options.parameters || [{ env: {} }, {}]) : obj)
       if (!config)
         return config
       return config.plugins.find((i: any) => plugins.includes(i.name) && i?.api?.config)?.api?.config
@@ -63,7 +71,7 @@ export function sourceObjectFields(options: SourceObjectFieldOptions): LoadConfi
   return {
     ...options,
     async rewrite(obj) {
-      const config = await (typeof obj === 'function' ? obj() : obj)
+      const config = await (typeof obj === 'function' ? obj(...options.parameters || []) : obj)
       if (!config)
         return config
       for (const field of fields) {
