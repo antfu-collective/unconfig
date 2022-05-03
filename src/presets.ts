@@ -14,16 +14,11 @@ export interface SourcePluginFactoryOptions extends Omit<LoadConfigSource, 'tran
   targetModule: string
 }
 
-interface ConfigEnv {
-  command: 'dev' | 'build' | 'serve'
-  mode?: string
-}
-
 /**
- * Retwrite the config file and extract the options passed to plugin factory
+ * Rewrite the config file and extract the options passed to plugin factory
  * (e.g. Vite and Rollup plugins)
  */
-export function sourcePluginFactory(options: SourcePluginFactoryOptions, env: ConfigEnv = { command: 'dev' }) {
+export function sourcePluginFactory(options: SourcePluginFactoryOptions, parameters: any[] = []) {
   return {
     ...options,
     transform: (source: string) => {
@@ -37,7 +32,7 @@ __unconfig_stub.default = (data) => { __unconfig_data = data };
         .replace(new RegExp(`import (.+?) from (['"])${options.targetModule}\\2`), 'const $1 = __unconfig_stub;')
         .replace('export default', 'const __unconfig_default = ')
       if (code.includes('__unconfig_default'))
-        code += `\nif (typeof __unconfig_default === "function") __unconfig_default(${JSON.stringify(env)});`
+        code += `\nif (typeof __unconfig_default === "function") __unconfig_default(...${JSON.stringify(parameters)});`
       return `${prefix}${code}${suffix}`
     },
   }

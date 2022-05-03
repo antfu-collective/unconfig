@@ -17,6 +17,10 @@ it('load', async() => {
         files: 'rewrite.js',
         extensions: [],
       }),
+      sourcePluginFactory({
+        targetModule: 'stub',
+        files: 'params',
+      }, ['include me', { param2: 'but not me' }]),
     ],
     cwd: resolve(__dirname, 'fixtures'),
     defaults: {

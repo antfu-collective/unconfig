@@ -1,7 +1,7 @@
 import a from 'stub'
 
-export default ({ command }) => {
+export default () => {
   return a({
-    rewrite: command === 'dev' ? 'Hi' : 'Bye',
+    rewrite: 'Hi',
   })
 }
