@@ -20,7 +20,8 @@ it('load', async() => {
       sourcePluginFactory({
         targetModule: 'stub',
         files: 'params',
-      }, ['include me', { param2: 'but not me' }]),
+        parameters: ['include me', { param2: 'but not me' }],
+      }),
     ],
     cwd: resolve(__dirname, 'fixtures'),
     defaults: {

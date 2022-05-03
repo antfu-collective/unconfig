@@ -12,13 +12,17 @@ export interface SourceObjectFieldOptions extends Omit<LoadConfigSource, 'rewrit
 
 export interface SourcePluginFactoryOptions extends Omit<LoadConfigSource, 'transform'>{
   targetModule: string
+  /**
+   * Parameters that passed to when the default export is a function
+   */
+  parameters?: any[]
 }
 
 /**
  * Rewrite the config file and extract the options passed to plugin factory
  * (e.g. Vite and Rollup plugins)
  */
-export function sourcePluginFactory(options: SourcePluginFactoryOptions, parameters: any[] = []) {
+export function sourcePluginFactory(options: SourcePluginFactoryOptions) {
   return {
     ...options,
     transform: (source: string) => {
@@ -32,7 +36,7 @@ __unconfig_stub.default = (data) => { __unconfig_data = data };
         .replace(new RegExp(`import (.+?) from (['"])${options.targetModule}\\2`), 'const $1 = __unconfig_stub;')
         .replace('export default', 'const __unconfig_default = ')
       if (code.includes('__unconfig_default'))
-        code += `\nif (typeof __unconfig_default === "function") __unconfig_default(...${JSON.stringify(parameters)});`
+        code += `\nif (typeof __unconfig_default === "function") __unconfig_default(...${JSON.stringify(options.parameters || [])});`
       return `${prefix}${code}${suffix}`
     },
   }
