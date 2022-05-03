@@ -4,7 +4,7 @@ export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json'
 
 export type BuiltinParsers = 'require' | 'json'
 
-export type CustomParser<T> = (filepath: string) => Awaitable<T |undefined>
+export type CustomParser<T> = (filepath: string) => Awaitable<T | undefined>
 
 export interface LoadConfigSource<T = any> {
   files: Arrayable<string>

@@ -18,7 +18,7 @@ export interface SourceObjectFieldOptions extends Omit<LoadConfigSource, 'rewrit
   parameters?: any[]
 }
 
-export interface SourcePluginFactoryOptions extends Omit<LoadConfigSource, 'transform'>{
+export interface SourcePluginFactoryOptions extends Omit<LoadConfigSource, 'transform'> {
   targetModule: string
   /**
    * Parameters that passed to when the default export is a function

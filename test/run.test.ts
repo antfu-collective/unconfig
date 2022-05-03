@@ -3,7 +3,7 @@ import { expect, it } from 'vitest'
 import { loadConfig } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
-it('load', async() => {
+it('load', async () => {
   const result = await loadConfig({
     sources: [
       {
