@@ -166,6 +166,6 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
   }
   finally {
     if (bundleFilepath !== filepath)
-      await fs.unlink(bundleFilepath)
+      await fs.unlink(bundleFilepath).catch()
   }
 }
