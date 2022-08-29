@@ -1,7 +1,7 @@
 {
   "name": "unconfig",
   "version": "0.3.5",
-  "packageManager": "pnpm@7.5.0",
+  "packageManager": "pnpm@7.9.0",
   "description": "A universal solution for loading configurations.",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -48,18 +48,18 @@
   },
   "dependencies": {
     "@antfu/utils": "^0.5.2",
-    "defu": "^6.0.0",
+    "defu": "^6.1.0",
     "jiti": "^1.14.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.25.2",
-    "@antfu/ni": "^0.16.3",
-    "@types/node": "^18.0.1",
+    "@antfu/eslint-config": "^0.26.2",
+    "@antfu/ni": "^0.17.2",
+    "@types/node": "^18.7.13",
     "bumpp": "^8.2.1",
-    "eslint": "^8.19.0",
+    "eslint": "^8.23.0",
     "esno": "^0.16.3",
-    "typescript": "^4.7.4",
-    "unbuild": "^0.7.4",
-    "vitest": "^0.17.0"
+    "typescript": "^4.8.2",
+    "unbuild": "^0.8.9",
+    "vitest": "^0.22.1"
   }
 }
