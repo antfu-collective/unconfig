@@ -36,8 +36,8 @@ export function sourcePluginFactory(options: SourcePluginFactoryOptions) {
     transform: (source: string) => {
       const prefix = `
 let __unconfig_data;
-let __unconfig_stub = function (data) { __unconfig_data = data };
-__unconfig_stub.default = (data) => { __unconfig_data = data };
+let __unconfig_stub = function (data = {}) { __unconfig_data = data };
+__unconfig_stub.default = (data = {}) => { __unconfig_data = data };
 `
       const suffix = 'export default __unconfig_data;'
       let code = source

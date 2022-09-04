@@ -1,6 +1,16 @@
 // Vitest Snapshot v1
 
-exports[`load > files 1`] = `6`;
+exports[`load > files 1`] = `
+[
+  "un.config.ts",
+  "un.config.mjs",
+  "un.config.json",
+  "package.json",
+  "rewrite.js",
+  "rewrite2.js",
+  "params.js",
+]
+`;
 
 exports[`load 1`] = `
 {

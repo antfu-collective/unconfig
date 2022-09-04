@@ -4,6 +4,7 @@ import { loadConfig } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
 it('load', async () => {
+  const cwd = resolve(__dirname, 'fixtures')
   const result = await loadConfig({
     sources: [
       {
@@ -19,11 +20,16 @@ it('load', async () => {
       }),
       sourcePluginFactory({
         targetModule: 'stub',
+        files: 'rewrite2.js',
+        extensions: [],
+      }),
+      sourcePluginFactory({
+        targetModule: 'stub',
         files: 'params',
         parameters: ['include me', { param2: 'but not me' }],
       }),
     ],
-    cwd: resolve(__dirname, 'fixtures'),
+    cwd,
     defaults: {
       defaults: 'default',
       deep: { foo: 'hi' },
@@ -31,6 +37,9 @@ it('load', async () => {
     merge: true,
   })
 
-  expect(result.config).toMatchSnapshot()
-  expect(result.sources.length).toMatchSnapshot('files')
+  expect(result.config)
+    .toMatchSnapshot()
+
+  expect(result.sources.map(i => i.slice(cwd.length + 1)))
+    .toMatchSnapshot('files')
 })
