@@ -53,8 +53,8 @@ const { config, sources } = await loadConfig({
     {
       files: 'vite.config',
       async rewrite(config) {
-        const config = await (typeof config === 'function' ? config() : config)
-        return config?.my
+        const resolved = await (typeof config === 'function' ? config() : config)
+        return resolved?.my
       },
     },
     // ...
