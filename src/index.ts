@@ -137,7 +137,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
           v8cache: false,
           esmResolve: true,
           // FIXME: https://github.com/unjs/jiti/pull/141
-          // requireCache: false,
+          requireCache: false,
         })(bundleFilepath)
       }
       else if (parser === 'json') {
