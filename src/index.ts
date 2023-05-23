@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs'
-import { basename, dirname, join } from 'path'
+import { promises as fs } from 'node:fs'
+import { basename, dirname, join } from 'node:path'
 import jiti from 'jiti'
 import { notNullish, toArray } from '@antfu/utils'
 import defu from 'defu'
@@ -134,9 +134,10 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
         config = await jiti(filepath, {
           interopDefault: true,
           cache: false,
-          requireCache: false,
           v8cache: false,
           esmResolve: true,
+          // FIXME: https://github.com/unjs/jiti/pull/141
+          // requireCache: false,
         })(bundleFilepath)
       }
       else if (parser === 'json') {

@@ -1,10 +1,12 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { expect, it } from 'vitest'
 import { loadConfig } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
-it('load', async () => {
-  const cwd = resolve(__dirname, 'fixtures')
+const fixtureDir = resolve(__dirname, 'fixtures')
+
+it('one', async () => {
+  const cwd = resolve(fixtureDir, 'one')
   const result = await loadConfig({
     sources: [
       {
@@ -34,6 +36,25 @@ it('load', async () => {
       defaults: 'default',
       deep: { foo: 'hi' },
     },
+    merge: true,
+  })
+
+  expect(result.config)
+    .toMatchSnapshot()
+
+  expect(result.sources.map(i => i.slice(cwd.length + 1)))
+    .toMatchSnapshot('files')
+})
+
+it('two', async () => {
+  const cwd = resolve(fixtureDir, 'two')
+  const result = await loadConfig({
+    sources: [
+      {
+        files: 'lodash-es',
+      },
+    ],
+    cwd,
     merge: true,
   })
 

@@ -1,6 +1,6 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`load > files 1`] = `
+exports[`one > files 1`] = `
 [
   "un.config.ts",
   "un.config.mjs",
@@ -12,7 +12,7 @@ exports[`load > files 1`] = `
 ]
 `;
 
-exports[`load 1`] = `
+exports[`one 1`] = `
 {
   "deep": {
     "foo": "you should get this",
@@ -24,5 +24,18 @@ exports[`load 1`] = `
   "param1": "include me",
   "rewrite": "Hi",
   "ts": "hello",
+}
+`;
+
+exports[`two > files 1`] = `
+[
+  "lodash-es.js",
+]
+`;
+
+exports[`two 1`] = `
+{
+  "bar": "bar",
+  "foo": "foo",
 }
 `;

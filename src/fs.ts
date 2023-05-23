@@ -1,5 +1,5 @@
-import fs, { constants, promises as fsp } from 'fs'
-import { dirname, parse, resolve } from 'path'
+import fs, { constants, promises as fsp } from 'node:fs'
+import { dirname, parse, resolve } from 'node:path'
 
 export interface FindUpOptions {
   /**
