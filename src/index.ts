@@ -132,7 +132,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
         config = await parser(filepath)
       }
       else if (parser === 'require') {
-        if (process.env.npm_execpath.includes('bun')) {
+        if (process.versions.bun) {
           const defaultImport = await import(filepath)
           config = interopDefault(defaultImport)
         } else {
