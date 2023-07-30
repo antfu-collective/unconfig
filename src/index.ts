@@ -1,5 +1,6 @@
 import { promises as fs } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
+import process from 'node:process'
 import { interopDefault } from 'mlly'
 import jiti from 'jiti'
 import { notNullish, toArray } from '@antfu/utils'
@@ -135,7 +136,8 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
         if (process.versions.bun) {
           const defaultImport = await import(filepath)
           config = interopDefault(defaultImport)
-        } else {
+        }
+        else {
           config = await jiti(filepath, {
             interopDefault: true,
             cache: false,
