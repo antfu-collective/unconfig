@@ -90,7 +90,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
   }
 }
 
-export async function loadConfig<T>(options: LoadConfigOptions): Promise<LoadConfigResult<T>> {
+export async function loadConfig<T>(options: LoadConfigOptions<T>): Promise<LoadConfigResult<T>> {
   return createConfigLoader<T>(options).load()
 }
 
