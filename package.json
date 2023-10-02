@@ -1,7 +1,7 @@
 {
   "name": "unconfig",
   "type": "module",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "packageManager": "pnpm@8.8.0",
   "description": "A universal solution for loading configurations.",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
