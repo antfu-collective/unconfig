@@ -1,7 +1,8 @@
 {
   "name": "unconfig",
+  "type": "module",
   "version": "0.3.10",
-  "packageManager": "pnpm@8.6.10",
+  "packageManager": "pnpm@8.8.0",
   "description": "A universal solution for loading configurations.",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -21,21 +22,21 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./presets": {
       "types": "./dist/presets.d.ts",
-      "require": "./dist/presets.cjs",
-      "import": "./dist/presets.mjs"
+      "import": "./dist/presets.mjs",
+      "require": "./dist/presets.cjs"
     }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist",
-    "*.d.ts"
+    "*.d.ts",
+    "dist"
   ],
   "scripts": {
     "build": "unbuild",
@@ -47,21 +48,21 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@antfu/utils": "^0.7.5",
+    "@antfu/utils": "^0.7.6",
     "defu": "^6.1.2",
-    "jiti": "^1.19.1",
-    "mlly": "^1.4.0"
+    "jiti": "^1.20.0",
+    "mlly": "^1.4.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.8",
-    "@antfu/ni": "^0.21.5",
-    "@types/node": "^20.4.5",
-    "bumpp": "^9.1.1",
-    "eslint": "^8.46.0",
+    "@antfu/eslint-config": "^1.0.0-beta.18",
+    "@antfu/ni": "^0.21.8",
+    "@types/node": "^20.8.0",
+    "bumpp": "^9.2.0",
+    "eslint": "^8.50.0",
     "esno": "^0.17.0",
     "lodash-es": "^4.17.21",
-    "typescript": "^5.1.6",
-    "unbuild": "^1.2.1",
-    "vitest": "^0.33.0"
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0",
+    "vitest": "^0.34.6"
   }
 }

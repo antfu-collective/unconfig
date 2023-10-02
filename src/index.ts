@@ -64,7 +64,8 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
       else {
         results.push(
           ...(await Promise.all(
-            files.map(file => loadConfigFile(file, source)))
+            files.map(file => loadConfigFile(file, source)),
+          )
           ).filter(notNullish),
         )
       }
