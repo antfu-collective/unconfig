@@ -46,8 +46,7 @@ it('one', async () => {
     .toMatchSnapshot('files')
 })
 
-// FIXME: https://github.com/unjs/jiti/pull/141
-it.skip('two', async () => {
+it('two', async () => {
   const cwd = resolve(fixtureDir, 'two')
   const result = await loadConfig({
     sources: [
@@ -64,4 +63,20 @@ it.skip('two', async () => {
 
   expect(result.sources.map(i => i.slice(cwd.length + 1)))
     .toMatchSnapshot('files')
+})
+
+// https://github.com/antfu/unconfig/issues/26
+it('array', async () => {
+  const cwd = resolve(fixtureDir, 'array')
+  const result = await loadConfig({
+    sources: [
+      {
+        files: 'foo.config',
+      },
+    ],
+    cwd,
+  })
+
+  expect(result.config)
+    .toMatchSnapshot()
 })

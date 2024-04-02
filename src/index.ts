@@ -56,7 +56,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
         const result = await loadConfigFile(files[0], source)
         if (result) {
           return {
-            config: defu(result.config, defaults),
+            config: applyDefaults(result.config, defaults),
             sources: result.sources,
           }
         }
@@ -79,8 +79,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
     }
 
     return {
-      // @ts-expect-error cast
-      config: defu(...results.map(i => i.config), defaults),
+      config: applyDefaults(...results.map(i => i.config), defaults),
       sources: results.map(i => i.sources).flat(),
     }
   }
@@ -89,6 +88,12 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
     load,
     findConfigs,
   }
+}
+
+function applyDefaults(...args: any[]): any {
+  // defu does not support top-level array merging, we wrap it with an object and unwrap it
+  // @ts-expect-error cast
+  return defu(...args.map((i: any) => ({ config: i }))).config
 }
 
 export async function loadConfig<T>(options: LoadConfigOptions<T>): Promise<LoadConfigResult<T>> {
