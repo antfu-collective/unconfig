@@ -1,13 +1,13 @@
 import { promises as fs } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import process from 'node:process'
-import { interopDefault } from 'mlly'
 import jiti from 'jiti'
 import { notNullish, toArray } from '@antfu/utils'
 import defu from 'defu'
 import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
 import { defaultExtensions } from './types'
 import { findUp } from './fs'
+import { interopDefault } from './interop'
 
 export * from './types'
 
