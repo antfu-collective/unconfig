@@ -50,8 +50,7 @@
   "dependencies": {
     "@antfu/utils": "^0.7.7",
     "defu": "^6.1.4",
-    "jiti": "^1.21.0",
-    "mlly": "^1.6.1"
+    "jiti": "^1.21.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.11.6",
