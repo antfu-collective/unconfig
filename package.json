@@ -53,15 +53,15 @@
     "jiti": "^1.21.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.11.6",
+    "@antfu/eslint-config": "^2.13.3",
     "@antfu/ni": "^0.21.12",
-    "@types/node": "^20.12.2",
+    "@types/node": "^20.12.7",
     "bumpp": "^9.4.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.0.0",
     "esno": "^4.7.0",
     "lodash-es": "^4.17.21",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.5",
     "unbuild": "^2.0.0",
-    "vitest": "^1.4.0"
+    "vitest": "^1.5.0"
   }
 }
