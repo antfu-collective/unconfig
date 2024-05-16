@@ -1,7 +1,6 @@
 import { promises as fs } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import process from 'node:process'
-import jiti from 'jiti'
 import { notNullish, toArray } from '@antfu/utils'
 import defu from 'defu'
 import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
@@ -58,6 +57,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
           return {
             config: applyDefaults(result.config, defaults),
             sources: result.sources,
+            dependencies: result.dependencies,
           }
         }
       }
@@ -81,6 +81,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
     return {
       config: applyDefaults(...results.map(i => i.config), defaults),
       sources: results.map(i => i.sources).flat(),
+      dependencies: results.flatMap(i => i.dependencies || []),
     }
   }
 
@@ -129,30 +130,27 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
       parser = 'json'
     }
     catch {
-      parser = 'require'
+      parser = 'import'
     }
   }
+
+  let dependencies: string[] | undefined
 
   try {
     if (!config) {
       if (typeof parser === 'function') {
         config = await parser(filepath)
       }
-      else if (parser === 'require') {
-        if (process.versions.bun) {
-          const defaultImport = await import(filepath)
-          config = interopDefault(defaultImport)
-        }
-        else {
-          config = await jiti(filepath, {
-            interopDefault: true,
-            cache: false,
-            v8cache: false,
-            esmResolve: true,
-            // FIXME: https://github.com/unjs/jiti/pull/141
-            requireCache: false,
-          })(bundleFilepath)
-        }
+      else if (parser === 'require' || parser === 'import') {
+        config = await import('importx')
+          .then(async (r) => {
+            const mod = await r.import(bundleFilepath, {
+              parentURL: filepath,
+              cache: false,
+            })
+            dependencies = r.getModuleInfo(mod)?.dependencies
+            return interopDefault(mod)
+          })
       }
       else if (parser === 'json') {
         config = JSON.parse(await read())
@@ -172,6 +170,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
     return {
       config: rewritten,
       sources: [filepath],
+      dependencies,
     }
   }
   catch (e) {
