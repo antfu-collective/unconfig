@@ -70,4 +70,5 @@ export interface LoadConfigOptions<T = any> extends SearchOptions {
 export interface LoadConfigResult<T> {
   config: T
   sources: string[]
+  dependencies?: string[]
 }
