@@ -21,12 +21,10 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
     "./presets": {
-      "types": "./dist/presets.d.ts",
       "import": "./dist/presets.mjs",
       "require": "./dist/presets.cjs"
     }
@@ -50,7 +48,7 @@
   "dependencies": {
     "@antfu/utils": "^0.7.8",
     "defu": "^6.1.4",
-    "importx": "^0.2.3"
+    "importx": "^0.2.4"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.18.0",
