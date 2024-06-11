@@ -2,7 +2,7 @@
   "name": "unconfig",
   "type": "module",
   "version": "0.4.2",
-  "packageManager": "pnpm@9.1.2",
+  "packageManager": "pnpm@9.3.0",
   "description": "A universal solution for loading configurations.",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -48,14 +48,14 @@
   "dependencies": {
     "@antfu/utils": "^0.7.8",
     "defu": "^6.1.4",
-    "importx": "^0.3.0"
+    "importx": "^0.3.5"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.18.1",
+    "@antfu/eslint-config": "^2.21.0",
     "@antfu/ni": "^0.21.12",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.14.2",
     "bumpp": "^9.4.1",
-    "eslint": "^9.3.0",
+    "eslint": "^9.4.0",
     "esno": "^4.7.0",
     "lodash-es": "^4.17.21",
     "typescript": "^5.4.5",
