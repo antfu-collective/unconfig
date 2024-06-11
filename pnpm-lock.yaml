@@ -15,8 +15,8 @@ importers:
         specifier: ^6.1.4
         version: 6.1.4
       importx:
-        specifier: ^0.3.5
-        version: 0.3.5
+        specifier: ^0.3.6
+        version: 0.3.6
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^2.21.0
@@ -1197,11 +1197,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  bundle-require@4.1.0:
-    resolution: {integrity: sha512-FeArRFM+ziGkRViKRnSTbHZc35dgmR9yNog05Kn0+ItI59pOAISGvnnIwW1WgFZQW59IxD9QpJnUPkdIPfZuXg==}
+  bundle-require@5.0.0:
+    resolution: {integrity: sha512-GuziW3fSSmopcx4KRymQEJVbZUfqlCqcq7dvs6TYwKRZiegK/2buMxQTPs6MGlNv50wms1699qYO54R8XfRX4w==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     peerDependencies:
-      esbuild: '>=0.17'
+      esbuild: '>=0.18'
 
   c12@1.10.0:
     resolution: {integrity: sha512-0SsG7UDhoRWcuSvKWHaXmu5uNjDCDN3nkQLRL4Q42IlFy+ze58FcCoI3uPwINXinkz7ZinbhEgyzYFw9u9ZV8g==}
@@ -1792,8 +1792,8 @@ packages:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
 
-  importx@0.3.5:
-    resolution: {integrity: sha512-YkIUWkeNX/sxxU6lVTxhqQH0e63iH97gZic6B+a3GgOlox7GMpJEbgu1alyEf6hU55uN+1qFXBLOzDhGlZ1Mfw==}
+  importx@0.3.6:
+    resolution: {integrity: sha512-tOIGBrbTxmWzTx133qeIxMrfZfV2IQvBWQUsmpVMkKoraHKq0RLxgrhGI23KfKUAfcghzCHgfXHeH8MvpjEnVw==}
 
   imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
@@ -1871,6 +1871,10 @@ packages:
 
   jiti@1.21.0:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
+    hasBin: true
+
+  jiti@1.21.6:
+    resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
 
   js-tokens@4.0.0:
@@ -3610,7 +3614,7 @@ snapshots:
       prompts: 2.4.2
       semver: 7.6.2
 
-  bundle-require@4.1.0(esbuild@0.20.2):
+  bundle-require@5.0.0(esbuild@0.20.2):
     dependencies:
       esbuild: 0.20.2
       load-tsconfig: 0.2.5
@@ -4368,12 +4372,12 @@ snapshots:
       parent-module: 1.0.1
       resolve-from: 4.0.0
 
-  importx@0.3.5:
+  importx@0.3.6:
     dependencies:
-      bundle-require: 4.1.0(esbuild@0.20.2)
+      bundle-require: 5.0.0(esbuild@0.20.2)
       debug: 4.3.5
       esbuild: 0.20.2
-      jiti: 1.21.0
+      jiti: 1.21.6
       pathe: 1.1.2
       pkg-types: 1.1.1
       tsx: 4.15.2
@@ -4439,6 +4443,8 @@ snapshots:
   isexe@2.0.0: {}
 
   jiti@1.21.0: {}
+
+  jiti@1.21.6: {}
 
   js-tokens@4.0.0: {}
 
