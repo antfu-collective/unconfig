@@ -1,4 +1,5 @@
 import type { Arrayable, Awaitable } from '@antfu/utils'
+import type { SupportedLoader } from 'importx'
 
 export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json', '']
 
@@ -15,11 +16,18 @@ export interface LoadConfigSource<T = any> {
   extensions?: string[]
 
   /**
-   * Loader for loading config,
+   * Parser for loading config,
    *
    * @default 'auto'
    */
   parser?: BuiltinParsers | CustomParser<T> | 'auto'
+
+  /**
+   * Loader for importing JS and TS files.
+   *
+   * @default 'auto'
+   */
+  loader?: SupportedLoader | 'auto'
 
   /**
    * Rewrite the config object,
