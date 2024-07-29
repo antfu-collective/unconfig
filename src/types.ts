@@ -30,6 +30,15 @@ export interface LoadConfigSource<T = any> {
   loader?: SupportedLoader | 'auto'
 
   /**
+   * Fallback loaders when the previous loader failed.
+   *
+   * Set to `false` to disable fallback.
+   *
+   * Default to importx's default.
+   */
+  fallbackLoaders?: SupportedLoader[] | false
+
+  /**
    * Rewrite the config object,
    * return nullish value to bypassing loading the file
    */

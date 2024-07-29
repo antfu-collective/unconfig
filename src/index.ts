@@ -148,6 +148,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
               parentURL: filepath,
               cache: false,
               loader: source.loader || 'auto',
+              fallbackLoaders: source.fallbackLoaders,
             })
             dependencies = r.getModuleInfo(mod)?.dependencies
             return interopDefault(mod)
