@@ -147,6 +147,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
             const mod = await r.import(bundleFilepath, {
               parentURL: filepath,
               cache: false,
+              loader: source.loader || 'auto',
             })
             dependencies = r.getModuleInfo(mod)?.dependencies
             return interopDefault(mod)
