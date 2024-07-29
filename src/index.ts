@@ -153,7 +153,7 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
                 jiti: {
                   interopDefault: true,
                 },
-              }
+              },
             })
             dependencies = r.getModuleInfo(mod)?.dependencies
             return interopDefault(mod)
