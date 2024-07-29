@@ -37,8 +37,10 @@ jobs:
       - name: Install
         run: nci
 
+      - run: nr typecheck
+
       - name: Lint
-        run: nr lint --if-present
+        run: nr lint
 
       - name: Test
-        run: nr test --if-present
+        run: nr test
