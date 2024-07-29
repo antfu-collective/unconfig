@@ -49,7 +49,7 @@
   "dependencies": {
     "@antfu/utils": "^0.7.10",
     "defu": "^6.1.4",
-    "importx": "^0.4.1"
+    "importx": "^0.4.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.0",

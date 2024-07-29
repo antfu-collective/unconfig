@@ -149,6 +149,11 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
               cache: false,
               loader: source.loader || 'auto',
               fallbackLoaders: source.fallbackLoaders,
+              loaderOptions: {
+                jiti: {
+                  interopDefault: true,
+                },
+              }
             })
             dependencies = r.getModuleInfo(mod)?.dependencies
             return interopDefault(mod)
