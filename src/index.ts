@@ -52,7 +52,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
         continue
 
       if (!merge) {
-        const result = await loadConfigFile(files[0], source)
+        const result = await loadConfigFile(files[0], source, options)
         if (result) {
           return {
             config: applyDefaults(result.config, defaults),
@@ -64,7 +64,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
       else {
         results.push(
           ...(await Promise.all(
-            files.map(file => loadConfigFile(file, source)),
+            files.map(file => loadConfigFile(file, source, options)),
           )
           ).filter(notNullish),
         )
@@ -101,7 +101,11 @@ export async function loadConfig<T>(options: LoadConfigOptions<T>): Promise<Load
   return createConfigLoader<T>(options).load()
 }
 
-async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>): Promise<LoadConfigResult<T> | undefined> {
+async function loadConfigFile<T>(
+  filepath: string,
+  source: LoadConfigSource<T>,
+  options: LoadConfigOptions,
+): Promise<LoadConfigResult<T> | undefined> {
   let config: T | undefined
 
   let parser = source.parser || 'auto'
@@ -147,13 +151,17 @@ async function loadConfigFile<T>(filepath: string, source: LoadConfigSource<T>):
             const mod = await r.import(bundleFilepath, {
               parentURL: filepath,
               cache: false,
-              loader: source.loader || 'auto',
+              loader: source.loader,
               fallbackLoaders: source.fallbackLoaders,
               loaderOptions: {
                 jiti: {
                   interopDefault: true,
+                  ...options.importx?.loaderOptions?.jiti,
+                  ...source.importx?.loaderOptions?.jiti,
                 },
               },
+              ...options.importx,
+              ...source.importx,
             })
             dependencies = r.getModuleInfo(mod)?.dependencies
             return interopDefault(mod)

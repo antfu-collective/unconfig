@@ -1,5 +1,5 @@
 import type { Arrayable, Awaitable } from '@antfu/utils'
-import type { SupportedLoader } from 'importx'
+import type { ImportxOptions, SupportedLoader } from 'importx'
 
 export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json', '']
 
@@ -23,9 +23,15 @@ export interface LoadConfigSource<T = any> {
   parser?: BuiltinParsers | CustomParser<T> | 'auto'
 
   /**
+   * Importx options for loading TS files.
+   */
+  importx?: ImportxOptions
+
+  /**
    * Loader for importing JS and TS files.
    *
    * @default 'auto'
+   * @deprecated use `importx.loader` instead
    */
   loader?: SupportedLoader | 'auto'
 
@@ -35,6 +41,7 @@ export interface LoadConfigSource<T = any> {
    * Set to `false` to disable fallback.
    *
    * Default to importx's default.
+   * @deprecated use `importx.fallbackLoaders` instead
    */
   fallbackLoaders?: SupportedLoader[] | false
 
@@ -82,6 +89,10 @@ export interface SearchOptions {
 export interface LoadConfigOptions<T = any> extends SearchOptions {
   sources: Arrayable<LoadConfigSource<T>>
   defaults?: T
+  /**
+   * Importx options for loading TS files.
+   */
+  importx?: ImportxOptions
 }
 
 export interface LoadConfigResult<T> {
