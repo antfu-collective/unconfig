@@ -49,7 +49,7 @@
   "dependencies": {
     "@antfu/utils": "^0.7.10",
     "defu": "^6.1.4",
-    "importx": "^0.4.2"
+    "importx": "^0.4.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.0",
@@ -61,6 +61,6 @@
     "lodash-es": "^4.17.21",
     "typescript": "^5.5.4",
     "unbuild": "^2.0.0",
-    "vitest": "^2.0.4"
+    "vitest": "^2.0.5"
   }
 }

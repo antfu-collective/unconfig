@@ -148,22 +148,30 @@ async function loadConfigFile<T>(
       else if (parser === 'require' || parser === 'import') {
         config = await import('importx')
           .then(async (r) => {
-            const mod = await r.import(bundleFilepath, {
+            let mod = await r.import(bundleFilepath, {
               parentURL: filepath,
               cache: false,
               loader: source.loader,
               fallbackLoaders: source.fallbackLoaders,
               loaderOptions: {
+                ...options.importx?.loaderOptions,
+                ...source.importx?.loaderOptions,
                 jiti: {
                   interopDefault: true,
                   ...options.importx?.loaderOptions?.jiti,
                   ...source.importx?.loaderOptions?.jiti,
+                },
+                jitiV1: {
+                  interopDefault: true,
+                  ...options.importx?.loaderOptions?.jitiV1,
+                  ...source.importx?.loaderOptions?.jitiV1,
                 },
               },
               ...options.importx,
               ...source.importx,
             })
             dependencies = r.getModuleInfo(mod)?.dependencies
+            mod = interopDefault(mod)
             return interopDefault(mod)
           })
       }
