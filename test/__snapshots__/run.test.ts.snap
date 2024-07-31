@@ -1,24 +1,22 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`array 1`] = `
-{
-  "default": [
-    {
-      "dts": true,
-      "entry": [
-        "src/index.ts",
-      ],
-      "platform": "node",
-    },
-    {
-      "dts": false,
-      "entry": [
-        "src/index.ts",
-      ],
-      "platform": "node",
-    },
-  ],
-}
+[
+  {
+    "dts": true,
+    "entry": [
+      "src/index.ts",
+    ],
+    "platform": "node",
+  },
+  {
+    "dts": false,
+    "entry": [
+      "src/index.ts",
+    ],
+    "platform": "node",
+  },
+]
 `;
 
 exports[`one > files 1`] = `
