@@ -1,6 +1,6 @@
 import type { Arrayable } from '@antfu/utils'
-import { toArray } from '@antfu/utils'
 import type { LoadConfigSource } from './types'
+import { toArray } from '@antfu/utils'
 
 export interface SourceVitePluginConfigOptions {
   plugins: Arrayable<string>

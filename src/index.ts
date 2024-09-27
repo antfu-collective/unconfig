@@ -1,12 +1,12 @@
+import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
 import { promises as fs } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import process from 'node:process'
 import { notNullish, toArray } from '@antfu/utils'
 import defu from 'defu'
-import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
-import { defaultExtensions } from './types'
 import { findUp } from './fs'
 import { interopDefault } from './interop'
+import { defaultExtensions } from './types'
 
 export * from './types'
 
@@ -160,11 +160,6 @@ async function loadConfigFile<T>(
                   interopDefault: true,
                   ...options.importx?.loaderOptions?.jiti,
                   ...source.importx?.loaderOptions?.jiti,
-                },
-                jitiV1: {
-                  interopDefault: true,
-                  ...options.importx?.loaderOptions?.jitiV1,
-                  ...source.importx?.loaderOptions?.jitiV1,
                 },
               },
               ...options.importx,
