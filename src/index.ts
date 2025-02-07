@@ -144,7 +144,7 @@ async function loadConfigFile<T>(
       if (typeof parser === 'function') {
         config = await parser(filepath)
       }
-      else if (parser === 'require' || parser === 'import') {
+      else if (parser === 'import') {
         if (process.features.typescript || process.versions.bun || process.versions.deno) {
           const defaultImport = await import(filepath)
           config = interopDefault(defaultImport)
