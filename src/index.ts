@@ -52,7 +52,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
         continue
 
       if (!merge) {
-        const result = await loadConfigFile(files[0], source, options)
+        const result = await loadConfigFile(files[0], source)
         if (result) {
           return {
             config: applyDefaults(result.config, defaults),
@@ -64,7 +64,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
       else {
         results.push(
           ...(await Promise.all(
-            files.map(file => loadConfigFile(file, source, options)),
+            files.map(file => loadConfigFile(file, source)),
           )
           ).filter(notNullish),
         )
@@ -104,7 +104,6 @@ export async function loadConfig<T>(options: LoadConfigOptions<T>): Promise<Load
 async function loadConfigFile<T>(
   filepath: string,
   source: LoadConfigSource<T>,
-  options: LoadConfigOptions,
 ): Promise<LoadConfigResult<T> | undefined> {
   let config: T | undefined
 
@@ -146,27 +145,23 @@ async function loadConfigFile<T>(
         config = await parser(filepath)
       }
       else if (parser === 'require' || parser === 'import') {
-        config = await import('importx')
-          .then(async (r) => {
-            let mod = await r.import(bundleFilepath, {
-              parentURL: filepath,
-              cache: false,
-              loaderOptions: {
-                ...options.importx?.loaderOptions,
-                ...source.importx?.loaderOptions,
-                jiti: {
-                  interopDefault: true,
-                  ...options.importx?.loaderOptions?.jiti,
-                  ...source.importx?.loaderOptions?.jiti,
-                },
-              },
-              ...options.importx,
-              ...source.importx,
-            })
-            dependencies = r.getModuleInfo(mod)?.dependencies
-            mod = interopDefault(mod)
-            return interopDefault(mod)
+        if (process.features.typescript || process.versions.bun || process.versions.deno) {
+          const defaultImport = await import(filepath)
+          config = interopDefault(defaultImport)
+        }
+        else {
+          const { createJiti } = await import('jiti')
+          const jiti = createJiti(import.meta.url, {
+            fsCache: false,
+            moduleCache: false,
+            interopDefault: true,
           })
+          config = await jiti.import(bundleFilepath)
+          dependencies = Object
+            .values(jiti.cache || {})
+            .map((i: any) => i.filename)
+            .filter(Boolean)
+        }
       }
       else if (parser === 'json') {
         config = JSON.parse(await read())

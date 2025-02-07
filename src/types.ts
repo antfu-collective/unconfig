@@ -1,13 +1,10 @@
 import type { Arrayable, Awaitable } from '@antfu/utils'
-import type { ImportxOptions as ImportxOptionsFull, SupportedLoader } from 'importx'
 
 export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json', '']
 
 export type BuiltinParsers = 'require' | 'json' | 'import'
 
 export type CustomParser<T> = (filepath: string) => Awaitable<T | undefined>
-
-export type ImportxOptions = Partial<Omit<ImportxOptionsFull, 'parentURL'>>
 
 export interface LoadConfigSource<T = any> {
   files: Arrayable<string>
@@ -23,11 +20,6 @@ export interface LoadConfigSource<T = any> {
    * @default 'auto'
    */
   parser?: BuiltinParsers | CustomParser<T> | 'auto'
-
-  /**
-   * Importx options for loading TS files.
-   */
-  importx?: ImportxOptions
 
   /**
    * Rewrite the config object,
@@ -73,10 +65,6 @@ export interface SearchOptions {
 export interface LoadConfigOptions<T = any> extends SearchOptions {
   sources: Arrayable<LoadConfigSource<T>>
   defaults?: T
-  /**
-   * Importx options for loading TS files.
-   */
-  importx?: ImportxOptions
 }
 
 export interface LoadConfigResult<T> {
