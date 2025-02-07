@@ -157,9 +157,8 @@ async function loadConfigFile<T>(
             interopDefault: true,
           })
           config = interopDefault(await jiti.import(bundleFilepath, { default: true }))
-          dependencies = Object
-            .values(jiti.cache || {})
-            .map((i: any) => i.filename)
+          dependencies = Object.values(jiti.cache)
+            .map(i => i.filename)
             .filter(Boolean)
         }
       }
