@@ -30,24 +30,6 @@ export interface LoadConfigSource<T = any> {
   importx?: ImportxOptions
 
   /**
-   * Loader for importing JS and TS files.
-   *
-   * @default 'auto'
-   * @deprecated use `importx.loader` instead
-   */
-  loader?: SupportedLoader | 'auto'
-
-  /**
-   * Fallback loaders when the previous loader failed.
-   *
-   * Set to `false` to disable fallback.
-   *
-   * Default to importx's default.
-   * @deprecated use `importx.fallbackLoaders` instead
-   */
-  fallbackLoaders?: SupportedLoader[] | false
-
-  /**
    * Rewrite the config object,
    * return nullish value to bypassing loading the file
    */

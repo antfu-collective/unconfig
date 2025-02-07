@@ -151,8 +151,6 @@ async function loadConfigFile<T>(
             let mod = await r.import(bundleFilepath, {
               parentURL: filepath,
               cache: false,
-              loader: source.loader,
-              fallbackLoaders: source.fallbackLoaders,
               loaderOptions: {
                 ...options.importx?.loaderOptions,
                 ...source.importx?.loaderOptions,
