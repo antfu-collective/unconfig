@@ -17,6 +17,9 @@ importers:
       jiti:
         specifier: ^2.4.2
         version: 2.4.2
+      quansync:
+        specifier: ^0.2.2
+        version: 0.2.2
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^4.1.1
@@ -45,6 +48,9 @@ importers:
       unbuild:
         specifier: ^3.3.1
         version: 3.3.1(typescript@5.7.3)
+      unplugin-quansync:
+        specifier: ^0.3.2
+        version: 0.3.2(quansync@0.2.2)
       vitest:
         specifier: ^3.0.5
         version: 3.0.5(@types/debug@4.1.12)(@types/node@22.13.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0)
@@ -924,6 +930,10 @@ packages:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
     engines: {node: '>=12'}
 
+  ast-kit@1.4.0:
+    resolution: {integrity: sha512-BlGeOw73FDsX7z0eZE/wuuafxYoek2yzNJ6l6A1nsb4+z/p87TOPbHaWuN53kFKNuUXiCQa2M+xLF71IqQmRSw==}
+    engines: {node: '>=16.14.0'}
+
   autoprefixer@10.4.20:
     resolution: {integrity: sha512-XY25y5xSv/wEoqzDyXXME4AFfkZI0P23z6Fs3YgymDnKJkCGOnkL0iTxCa85UTqaSgfcqyf3UA6+c7wUvx/16g==}
     engines: {node: ^10 || ^12 || >=14}
@@ -1720,6 +1730,10 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
+  magic-string-ast@0.7.0:
+    resolution: {integrity: sha512-686fgAHaJY7wLTFEq7nnKqeQrhqmXB19d1HnqT35Ci7BN6hbAYLZUezTQ062uUHM7ggZEQlqJ94Ftls+KDXU8Q==}
+    engines: {node: '>=16.14.0'}
+
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
@@ -2248,6 +2262,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  quansync@0.2.2:
+    resolution: {integrity: sha512-PrJjqc5Sn6Jv3vlIA9LQs0XdyhCTWrFddMgNP8mGyh3OiMh6ofOES4PRIApcfOZ0wLE2jJN+5/2eyOvzTv9tqw==}
+
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
@@ -2533,6 +2550,20 @@ packages:
   unist-util-visit@5.0.0:
     resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
 
+  unplugin-quansync@0.3.2:
+    resolution: {integrity: sha512-1O10JYKBQGOCDYO47q0xprM+LLrwbvW8G73BZGU3CyhapdMwF90hJ4Q3QxmK5C3MSuYLBUUz+7tIU0Zqil/OQw==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      quansync: '>=0.2.2'
+
+  unplugin-utils@0.2.4:
+    resolution: {integrity: sha512-8U/MtpkPkkk3Atewj1+RcKIjb5WBimZ/WSLhhR3w6SsIj8XJuKTacSP8g+2JhfSGw0Cb125Y+2zA/IzJZDVbhA==}
+    engines: {node: '>=18.12.0'}
+
+  unplugin@2.2.0:
+    resolution: {integrity: sha512-m1ekpSwuOT5hxkJeZGRxO7gXbXT3gF26NjQ7GdVHoLoF8/nopLcd/QfPigpCy7i51oFHiRJg/CyHhj4vs2+KGw==}
+    engines: {node: '>=18.12.0'}
+
   untyped@1.5.2:
     resolution: {integrity: sha512-eL/8PlhLcMmlMDtNPKhyyz9kEBDS3Uk4yMu/ewlkT2WFbtzScjHWPJLdQLmaGPUKjXzwe9MumOtOgc4Fro96Kg==}
     hasBin: true
@@ -2630,6 +2661,9 @@ packages:
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'
+
+  webpack-virtual-modules@0.6.2:
+    resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -3460,6 +3494,11 @@ snapshots:
   args-tokenizer@0.3.0: {}
 
   assertion-error@2.0.1: {}
+
+  ast-kit@1.4.0:
+    dependencies:
+      '@babel/parser': 7.26.5
+      pathe: 2.0.2
 
   autoprefixer@10.4.20(postcss@8.5.1):
     dependencies:
@@ -4365,6 +4404,10 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
+  magic-string-ast@0.7.0:
+    dependencies:
+      magic-string: 0.30.17
+
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -5031,6 +5074,8 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  quansync@0.2.2: {}
+
   queue-microtask@1.2.3: {}
 
   rc9@2.1.2:
@@ -5338,6 +5383,24 @@ snapshots:
       unist-util-is: 6.0.0
       unist-util-visit-parents: 6.0.1
 
+  unplugin-quansync@0.3.2(quansync@0.2.2):
+    dependencies:
+      ast-kit: 1.4.0
+      magic-string-ast: 0.7.0
+      quansync: 0.2.2
+      unplugin: 2.2.0
+      unplugin-utils: 0.2.4
+
+  unplugin-utils@0.2.4:
+    dependencies:
+      pathe: 2.0.2
+      picomatch: 4.0.2
+
+  unplugin@2.2.0:
+    dependencies:
+      acorn: 8.14.0
+      webpack-virtual-modules: 0.6.2
+
   untyped@1.5.2:
     dependencies:
       '@babel/core': 7.26.0
@@ -5452,6 +5515,8 @@ snapshots:
       semver: 7.7.1
     transitivePeerDependencies:
       - supports-color
+
+  webpack-virtual-modules@0.6.2: {}
 
   which@2.0.2:
     dependencies:

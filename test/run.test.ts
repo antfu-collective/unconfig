@@ -1,3 +1,4 @@
+import type { LoadConfigOptions } from '../src'
 import { resolve } from 'node:path'
 import { expect, it } from 'vitest'
 import { loadConfig } from '../src'
@@ -7,7 +8,7 @@ const fixtureDir = resolve(__dirname, 'fixtures')
 
 it('one', async () => {
   const cwd = resolve(fixtureDir, 'one')
-  const result = await loadConfig({
+  const options: LoadConfigOptions = {
     sources: [
       {
         files: 'un.config',
@@ -37,12 +38,16 @@ it('one', async () => {
       deep: { foo: 'hi' },
     },
     merge: true,
-  })
+  }
+  const asyncResult = await loadConfig.async(options)
+  const syncResult = loadConfig.sync(options)
+  delete syncResult.config.__esModule
 
-  expect(result.config)
+  expect(syncResult).toEqual(asyncResult)
+  expect(asyncResult.config)
     .toMatchSnapshot()
 
-  expect(result.sources.map(i => i.slice(cwd.length + 1)))
+  expect(asyncResult.sources.map(i => i.slice(cwd.length + 1)))
     .toMatchSnapshot('files')
 })
 

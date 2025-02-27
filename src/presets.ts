@@ -54,8 +54,8 @@ export function sourceVitePluginConfig(options: SourceVitePluginConfigOptions): 
   const plugins = toArray(options.plugins)
   return {
     files: ['vite.config'],
-    async rewrite(obj) {
-      const config = await (typeof obj === 'function' ? obj(...options.parameters || [{ env: {} }, {}]) : obj)
+    rewrite(obj) {
+      const config = (typeof obj === 'function' ? obj(...options.parameters || [{ env: {} }, {}]) : obj)
       if (!config)
         return config
       return config.plugins.find((i: any) => plugins.includes(i.name) && i?.api?.config)?.api?.config
@@ -70,8 +70,8 @@ export function sourceObjectFields(options: SourceObjectFieldOptions): LoadConfi
   const fields = toArray(options.fields)
   return {
     ...options,
-    async rewrite(obj) {
-      const config = await (typeof obj === 'function' ? obj(...options.parameters || []) : obj)
+    rewrite(obj) {
+      const config = (typeof obj === 'function' ? obj(...options.parameters || []) : obj)
       if (!config)
         return config
       for (const field of fields) {

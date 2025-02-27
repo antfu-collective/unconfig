@@ -1,129 +1,82 @@
+import type { QuansyncGenerator } from 'quansync'
 import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
-import { promises as fs } from 'node:fs'
+import { createRequire } from 'node:module'
 import { basename, dirname, join } from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
-import { notNullish, toArray } from '@antfu/utils'
+import { toArray } from '@antfu/utils'
 import defu from 'defu'
-import { findUp } from './fs'
+import { quansync } from 'quansync/macro'
+import { findUp, readFile, unlink, writeFile } from './fs'
 import { interopDefault } from './interop'
 import { defaultExtensions } from './types'
 
 export * from './types'
 
-export function createConfigLoader<T>(options: LoadConfigOptions) {
-  const sources = toArray(options.sources || [])
-  const {
-    cwd = process.cwd(),
-    merge,
-    defaults,
-  } = options
+const require = createRequire(import.meta.url)
 
-  const results: LoadConfigResult<T>[] = []
-  let matchedFiles: [LoadConfigSource, string[]][] | undefined
-
-  async function findConfigs() {
-    if (matchedFiles == null)
-      matchedFiles = []
-
-    matchedFiles.length = 0
-    for (const source of sources) {
-      const { extensions = defaultExtensions } = source
-
-      const flatTargets = toArray(source?.files || [])
-        .flatMap(file => !extensions.length
-          ? [file]
-          : extensions.map(i => i ? `${file}.${i}` : file),
-        )
-
-      const files = await findUp(flatTargets, { cwd, stopAt: options.stopAt, multiple: merge })
-
-      matchedFiles.push([source, files])
-    }
-
-    return matchedFiles.flatMap(i => i[1])
-  }
-
-  async function load(force = false): Promise<LoadConfigResult<T>> {
-    if (matchedFiles == null || force)
-      await findConfigs()
-
-    for (const [source, files] of matchedFiles!) {
-      if (!files.length)
-        continue
-
-      if (!merge) {
-        const result = await loadConfigFile(files[0], source)
-        if (result) {
-          return {
-            config: applyDefaults(result.config, defaults),
-            sources: result.sources,
-            dependencies: result.dependencies,
-          }
-        }
-      }
-      else {
-        results.push(
-          ...(await Promise.all(
-            files.map(file => loadConfigFile(file, source)),
-          )
-          ).filter(notNullish),
-        )
-      }
-    }
-
-    if (!results.length) {
-      return {
-        config: defaults,
-        sources: [],
-      }
-    }
-
-    return {
-      config: applyDefaults(...results.map(i => i.config), defaults),
-      sources: results.map(i => i.sources).flat(),
-      dependencies: results.flatMap(i => i.dependencies || []),
-    }
-  }
-
-  return {
-    load,
-    findConfigs,
-  }
-}
-
-function applyDefaults(...args: any[]): any {
-  // defu does not support top-level array merging, we wrap it with an object and unwrap it
-  // @ts-expect-error cast
-  return defu(...args.map((i: any) => ({ config: i }))).config
-}
-
-export async function loadConfig<T>(options: LoadConfigOptions<T>): Promise<LoadConfigResult<T>> {
-  return createConfigLoader<T>(options).load()
-}
-
-async function loadConfigFile<T>(
+const loadConfigFile = quansync(async <T>(
   filepath: string,
   source: LoadConfigSource<T>,
-): Promise<LoadConfigResult<T> | undefined> {
+): Promise<LoadConfigResult<T> | undefined> => {
   let config: T | undefined
-
   let parser = source.parser || 'auto'
 
   let bundleFilepath = filepath
   let code: string | undefined
+  let dependencies: string[] | undefined
 
-  async function read() {
+  const read = quansync(async () => {
     if (code == null)
-      code = await fs.readFile(filepath, 'utf-8')
+      code = await readFile(filepath)
     return code
-  }
+  })
+
+  const builtinTS = process.features.typescript || process.versions.bun || process.versions.deno
+  const importModule = quansync({
+    sync: () => {
+      if (builtinTS) {
+        const defaultImport = require(bundleFilepath)
+        config = interopDefault(defaultImport)
+      }
+      else {
+        const { createJiti } = require('jiti') as typeof import('jiti')
+        const jiti = createJiti(import.meta.url, {
+          fsCache: false,
+          moduleCache: false,
+          interopDefault: true,
+        })
+        config = interopDefault(jiti(bundleFilepath))
+        dependencies = Object.values(jiti.cache)
+          .map(i => i.filename)
+          .filter(Boolean)
+      }
+    },
+    async: async () => {
+      if (builtinTS) {
+        const defaultImport = await import(pathToFileURL(bundleFilepath).href)
+        config = interopDefault(defaultImport)
+      }
+      else {
+        const { createJiti } = await import('jiti')
+        const jiti = createJiti(import.meta.url, {
+          fsCache: false,
+          moduleCache: false,
+          interopDefault: true,
+        })
+        config = interopDefault(await jiti.import(bundleFilepath, { default: true }))
+        dependencies = Object.values(jiti.cache)
+          .map(i => i.filename)
+          .filter(Boolean)
+      }
+    },
+  })
 
   if (source.transform) {
     const transformed = await source.transform(await read(), filepath)
     if (transformed) {
       bundleFilepath = join(dirname(filepath), `__unconfig_${basename(filepath)}`)
-      await fs.writeFile(bundleFilepath, transformed, 'utf-8')
+      await writeFile(bundleFilepath, transformed)
       code = transformed
     }
   }
@@ -138,30 +91,13 @@ async function loadConfigFile<T>(
     }
   }
 
-  let dependencies: string[] | undefined
-
   try {
     if (!config) {
       if (typeof parser === 'function') {
         config = await parser(filepath)
       }
       else if (parser === 'import') {
-        if (process.features.typescript || process.versions.bun || process.versions.deno) {
-          const defaultImport = await import(pathToFileURL(bundleFilepath).href)
-          config = interopDefault(defaultImport)
-        }
-        else {
-          const { createJiti } = await import('jiti')
-          const jiti = createJiti(import.meta.url, {
-            fsCache: false,
-            moduleCache: false,
-            interopDefault: true,
-          })
-          config = interopDefault(await jiti.import(bundleFilepath, { default: true }))
-          dependencies = Object.values(jiti.cache)
-            .map(i => i.filename)
-            .filter(Boolean)
-        }
+        await importModule()
       }
       else if (parser === 'json') {
         config = JSON.parse(await read())
@@ -191,6 +127,108 @@ async function loadConfigFile<T>(
   }
   finally {
     if (bundleFilepath !== filepath)
-      await fs.unlink(bundleFilepath).catch()
+      await unlink(bundleFilepath)
   }
+}) as {
+  <T>(filepath: string, source: LoadConfigSource<T>):
+    QuansyncGenerator<LoadConfigResult<T> | undefined> & Promise<LoadConfigResult<T> | undefined>
+  sync: <T>(filepath: string, source: LoadConfigSource<T>) => LoadConfigResult<T> | undefined
+  async: <T>(filepath: string, source: LoadConfigSource<T>) => Promise<LoadConfigResult<T> | undefined>
+}
+
+export function createConfigLoader<T>(options: LoadConfigOptions) {
+  const sources = toArray(options.sources || [])
+  const {
+    cwd = process.cwd(),
+    merge,
+    defaults,
+  } = options
+
+  const results: LoadConfigResult<T>[] = []
+  let matchedFiles: [LoadConfigSource, string[]][] | undefined
+
+  const findConfigs = quansync(async () => {
+    if (matchedFiles == null)
+      matchedFiles = []
+
+    matchedFiles.length = 0
+    for (const source of sources) {
+      const { extensions = defaultExtensions } = source
+
+      const flatTargets = toArray(source?.files || [])
+        .flatMap(file => !extensions.length
+          ? [file]
+          : extensions.map(i => i ? `${file}.${i}` : file),
+        )
+
+      const files = await findUp(flatTargets, { cwd, stopAt: options.stopAt, multiple: merge })
+
+      matchedFiles.push([source, files])
+    }
+
+    return matchedFiles.flatMap(i => i[1])
+  })
+
+  const load = quansync(async (force = false): Promise<LoadConfigResult<T>> => {
+    if (matchedFiles == null || force)
+      await findConfigs()
+
+    for (const [source, files] of matchedFiles!) {
+      if (!files.length)
+        continue
+
+      if (!merge) {
+        const result = await loadConfigFile(files[0], source)
+        if (result) {
+          return {
+            config: applyDefaults(result.config, defaults),
+            sources: result.sources,
+            dependencies: result.dependencies,
+          }
+        }
+      }
+      else {
+        for (const file of files) {
+          const result = await loadConfigFile(file, source)
+          if (result) {
+            results.push(result)
+          }
+        }
+      }
+    }
+
+    if (!results.length) {
+      return {
+        config: defaults,
+        sources: [],
+      }
+    }
+
+    return {
+      config: applyDefaults(...results.map(i => i.config), defaults),
+      sources: results.map(i => i.sources).flat(),
+      dependencies: results.flatMap(i => i.dependencies || []),
+    }
+  })
+
+  return {
+    load,
+    findConfigs,
+  }
+}
+
+function applyDefaults(...args: any[]): any {
+  // defu does not support top-level array merging, we wrap it with an object and unwrap it
+  // @ts-expect-error cast
+  return defu(...args.map((i: any) => ({ config: i }))).config
+}
+
+export const loadConfig = quansync(
+  <T>(options: LoadConfigOptions<T>): Promise<LoadConfigResult<T>> => {
+    return createConfigLoader<T>(options).load()
+  },
+) as {
+  <T>(options: LoadConfigOptions<T>): QuansyncGenerator<LoadConfigResult<T>> & Promise<LoadConfigResult<T>>
+  sync: <T>(options: LoadConfigOptions<T>) => LoadConfigResult<T>
+  async: <T>(options: LoadConfigOptions<T>) => Promise<LoadConfigResult<T>>
 }
