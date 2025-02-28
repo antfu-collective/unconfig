@@ -1,6 +1,7 @@
 import type { Arrayable } from '@antfu/utils'
 import type { LoadConfigSource } from './types'
 import { toArray } from '@antfu/utils'
+import { quansync } from 'quansync/macro'
 
 export interface SourceVitePluginConfigOptions {
   plugins: Arrayable<string>
@@ -54,12 +55,12 @@ export function sourceVitePluginConfig(options: SourceVitePluginConfigOptions): 
   const plugins = toArray(options.plugins)
   return {
     files: ['vite.config'],
-    rewrite(obj) {
-      const config = (typeof obj === 'function' ? obj(...options.parameters || [{ env: {} }, {}]) : obj)
+    rewrite: quansync(async (obj) => {
+      const config = await (typeof obj === 'function' ? obj(...options.parameters || [{ env: {} }, {}]) : obj)
       if (!config)
         return config
       return config.plugins.find((i: any) => plugins.includes(i.name) && i?.api?.config)?.api?.config
-    },
+    }),
   }
 }
 
@@ -70,15 +71,15 @@ export function sourceObjectFields(options: SourceObjectFieldOptions): LoadConfi
   const fields = toArray(options.fields)
   return {
     ...options,
-    rewrite(obj) {
-      const config = (typeof obj === 'function' ? obj(...options.parameters || []) : obj)
+    rewrite: quansync(async (obj) => {
+      const config = await (typeof obj === 'function' ? obj(...options.parameters || []) : obj)
       if (!config)
         return config
       for (const field of fields) {
         if (field in config)
           return config[field]
       }
-    },
+    }),
   }
 }
 

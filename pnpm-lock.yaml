@@ -49,8 +49,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1(typescript@5.7.3)
       unplugin-quansync:
-        specifier: ^0.3.2
-        version: 0.3.2(quansync@0.2.2)
+        specifier: ^0.3.3
+        version: 0.3.3(quansync@0.2.2)
       vitest:
         specifier: ^3.0.5
         version: 3.0.5(@types/debug@4.1.12)(@types/node@22.13.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0)
@@ -2550,8 +2550,8 @@ packages:
   unist-util-visit@5.0.0:
     resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
 
-  unplugin-quansync@0.3.2:
-    resolution: {integrity: sha512-1O10JYKBQGOCDYO47q0xprM+LLrwbvW8G73BZGU3CyhapdMwF90hJ4Q3QxmK5C3MSuYLBUUz+7tIU0Zqil/OQw==}
+  unplugin-quansync@0.3.3:
+    resolution: {integrity: sha512-bsO/xUbR7PAh6yb5CcCwLROsTUxUKLGIm1klXsMbtvV0NOVpOJTOB526KRnoLcx5ZmGLd5Y9kl2Sxz+0GUN3yA==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
       quansync: '>=0.2.2'
@@ -5383,7 +5383,7 @@ snapshots:
       unist-util-is: 6.0.0
       unist-util-visit-parents: 6.0.1
 
-  unplugin-quansync@0.3.2(quansync@0.2.2):
+  unplugin-quansync@0.3.3(quansync@0.2.2):
     dependencies:
       ast-kit: 1.4.0
       magic-string-ast: 0.7.0
