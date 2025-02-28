@@ -1,7 +1,7 @@
 import type { LoadConfigOptions } from '../src'
 import { resolve } from 'node:path'
 import { expect, it } from 'vitest'
-import { loadConfig } from '../src'
+import { loadConfig, loadConfigSync } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
 const fixtureDir = resolve(__dirname, 'fixtures')
@@ -39,8 +39,8 @@ it('one', async () => {
     },
     merge: true,
   }
-  const asyncResult = await loadConfig.async(options)
-  const syncResult = loadConfig.sync(options)
+  const asyncResult = await loadConfig(options)
+  const syncResult = loadConfigSync(options)
   delete syncResult.config.__esModule
 
   expect(syncResult).toEqual(asyncResult)

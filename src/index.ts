@@ -237,3 +237,4 @@ export const loadConfig = quansync(
   sync: <T>(options: LoadConfigOptions<T>) => LoadConfigResult<T>
   async: <T>(options: LoadConfigOptions<T>) => Promise<LoadConfigResult<T>>
 }
+export const loadConfigSync = loadConfig.sync
