@@ -42,9 +42,10 @@
   },
   "dependencies": {
     "@antfu/utils": "^8.1.0",
+    "@quansync/fs": "^0.1.1",
     "defu": "^6.1.4",
     "jiti": "^2.4.2",
-    "quansync": "^0.2.2"
+    "quansync": "^0.2.6"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.1",

@@ -5,9 +5,10 @@ import { basename, dirname, join } from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { toArray } from '@antfu/utils'
+import { readFile, unlink, writeFile } from '@quansync/fs'
 import defu from 'defu'
 import { quansync } from 'quansync/macro'
-import { findUp, readFile, unlink, writeFile } from './fs'
+import { findUp } from './fs'
 import { interopDefault } from './interop'
 import { defaultExtensions } from './types'
 
@@ -28,7 +29,7 @@ const loadConfigFile = quansync(async <T>(
 
   const read = quansync(async () => {
     if (code == null)
-      code = await readFile(filepath)
+      code = await readFile(filepath, 'utf8')
     return code
   })
 
@@ -76,7 +77,7 @@ const loadConfigFile = quansync(async <T>(
     const transformed = await source.transform(await read(), filepath)
     if (transformed) {
       bundleFilepath = join(dirname(filepath), `__unconfig_${basename(filepath)}`)
-      await writeFile(bundleFilepath, transformed)
+      await writeFile(bundleFilepath, transformed, 'utf8')
       code = transformed
     }
   }
@@ -126,8 +127,12 @@ const loadConfigFile = quansync(async <T>(
     throw e
   }
   finally {
-    if (bundleFilepath !== filepath)
-      await unlink(bundleFilepath)
+    if (bundleFilepath !== filepath) {
+      try {
+        await unlink(bundleFilepath)
+      }
+      catch {}
+    }
   }
 }) as {
   <T>(filepath: string, source: LoadConfigSource<T>):

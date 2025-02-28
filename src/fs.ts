@@ -1,6 +1,6 @@
-import fs from 'node:fs'
 import { dirname, parse, resolve } from 'node:path'
 import process from 'node:process'
+import { lstat, stat } from '@quansync/fs'
 import { quansync } from 'quansync/macro'
 
 export interface FindUpOptions {
@@ -22,23 +22,13 @@ export interface FindUpOptions {
   allowSymlinks?: boolean
 }
 
-const isFile = quansync({
-  sync: (path: string, allowSymlinks: boolean) => {
-    try {
-      return fs[allowSymlinks ? 'lstatSync' : 'statSync'](path).isFile()
-    }
-    catch {
-      return false
-    }
-  },
-  async: async (path: string, allowSymlinks: boolean) => {
-    try {
-      return (await fs.promises[allowSymlinks ? 'lstat' : 'stat'](path)).isFile()
-    }
-    catch {
-      return false
-    }
-  },
+const isFile = quansync(async (path: string, allowSymlinks: boolean) => {
+  try {
+    return (await (allowSymlinks ? lstat : stat)(path)).isFile()
+  }
+  catch {
+    return false
+  }
 })
 
 export const findUp = quansync(
@@ -72,23 +62,3 @@ export const findUp = quansync(
     return files
   },
 )
-
-export const readFile = quansync({
-  sync: (path: string) => fs.readFileSync(path, 'utf8'),
-  async: path => fs.promises.readFile(path, 'utf8'),
-})
-
-export const writeFile = quansync({
-  sync: (path: string, data: string) => fs.writeFileSync(path, data),
-  async: (path, data) => fs.promises.writeFile(path, data),
-})
-
-export const unlink = quansync({
-  sync: (path: string) => {
-    try {
-      fs.unlinkSync(path)
-    }
-    catch {}
-  },
-  async: path => fs.promises.unlink(path).catch(() => {}),
-})

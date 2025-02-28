@@ -11,6 +11,9 @@ importers:
       '@antfu/utils':
         specifier: ^8.1.0
         version: 8.1.0
+      '@quansync/fs':
+        specifier: ^0.1.1
+        version: 0.1.1
       defu:
         specifier: ^6.1.4
         version: 6.1.4
@@ -18,8 +21,8 @@ importers:
         specifier: ^2.4.2
         version: 2.4.2
       quansync:
-        specifier: ^0.2.2
-        version: 0.2.2
+        specifier: ^0.2.6
+        version: 0.2.6
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^4.1.1
@@ -50,7 +53,7 @@ importers:
         version: 3.3.1(typescript@5.7.3)
       unplugin-quansync:
         specifier: ^0.3.3
-        version: 0.3.3(quansync@0.2.2)
+        version: 0.3.3(quansync@0.2.6)
       vitest:
         specifier: ^3.0.5
         version: 3.0.5(@types/debug@4.1.12)(@types/node@22.13.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0)
@@ -598,6 +601,10 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@quansync/fs@0.1.1':
+    resolution: {integrity: sha512-sx8J1O/+j2lqs8MvsEz6rs/6UAUpCb4fu7C6EqtMqzbS3CmqLkTDTOMK+DrWukvyUuHzl8DhMjfNJzQDTqfGJg==}
+    engines: {node: '>=20.18.0'}
 
   '@rollup/plugin-alias@5.1.1':
     resolution: {integrity: sha512-PR9zDb+rOzkRb2VD+EuKB7UC41vU5DIwZ5qqCpk0KJudcWAyi8rvYOhS7+L5aZCspw1stTViLgN5v6FF1p5cgQ==}
@@ -2262,8 +2269,8 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  quansync@0.2.2:
-    resolution: {integrity: sha512-PrJjqc5Sn6Jv3vlIA9LQs0XdyhCTWrFddMgNP8mGyh3OiMh6ofOES4PRIApcfOZ0wLE2jJN+5/2eyOvzTv9tqw==}
+  quansync@0.2.6:
+    resolution: {integrity: sha512-u3TuxVTuJtkTxKGk5oZ7K2/o+l0/cC6J8SOyaaSnrnroqvcVy7xBxtvBUyd+Xa8cGoCr87XmQj4NR6W+zbqH8w==}
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -3161,6 +3168,10 @@ snapshots:
       fastq: 1.18.0
 
   '@pkgr/core@0.1.1': {}
+
+  '@quansync/fs@0.1.1':
+    dependencies:
+      quansync: 0.2.6
 
   '@rollup/plugin-alias@5.1.1(rollup@4.30.1)':
     optionalDependencies:
@@ -5074,7 +5085,7 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  quansync@0.2.2: {}
+  quansync@0.2.6: {}
 
   queue-microtask@1.2.3: {}
 
@@ -5383,11 +5394,11 @@ snapshots:
       unist-util-is: 6.0.0
       unist-util-visit-parents: 6.0.1
 
-  unplugin-quansync@0.3.3(quansync@0.2.2):
+  unplugin-quansync@0.3.3(quansync@0.2.6):
     dependencies:
       ast-kit: 1.4.0
       magic-string-ast: 0.7.0
-      quansync: 0.2.2
+      quansync: 0.2.6
       unplugin: 2.2.0
       unplugin-utils: 0.2.4
 
