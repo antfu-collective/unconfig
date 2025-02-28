@@ -229,7 +229,7 @@ function applyDefaults(...args: any[]): any {
 }
 
 export const loadConfig = quansync(
-  <T>(options: LoadConfigOptions<T>): Promise<LoadConfigResult<T>> => {
+  async <T>(options: LoadConfigOptions<T>): Promise<LoadConfigResult<T>> => {
     return createConfigLoader<T>(options).load()
   },
 ) as {
