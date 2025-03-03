@@ -1,4 +1,4 @@
-import type { QuansyncGenerator } from 'quansync'
+import type { QuansyncAwaitableGenerator } from 'quansync'
 import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
 import { createRequire } from 'node:module'
 import { basename, dirname, join } from 'node:path'
@@ -135,8 +135,7 @@ const loadConfigFile = quansync(async <T>(
     }
   }
 }) as {
-  <T>(filepath: string, source: LoadConfigSource<T>):
-    QuansyncGenerator<LoadConfigResult<T> | undefined> & Promise<LoadConfigResult<T> | undefined>
+  <T>(filepath: string, source: LoadConfigSource<T>): QuansyncAwaitableGenerator<LoadConfigResult<T> | undefined>
   sync: <T>(filepath: string, source: LoadConfigSource<T>) => LoadConfigResult<T> | undefined
   async: <T>(filepath: string, source: LoadConfigSource<T>) => Promise<LoadConfigResult<T> | undefined>
 }
@@ -233,7 +232,7 @@ export const loadConfig = quansync(
     return createConfigLoader<T>(options).load()
   },
 ) as {
-  <T>(options: LoadConfigOptions<T>): QuansyncGenerator<LoadConfigResult<T>> & Promise<LoadConfigResult<T>>
+  <T>(options: LoadConfigOptions<T>): QuansyncAwaitableGenerator<LoadConfigResult<T>>
   sync: <T>(options: LoadConfigOptions<T>) => LoadConfigResult<T>
   async: <T>(options: LoadConfigOptions<T>) => Promise<LoadConfigResult<T>>
 }
