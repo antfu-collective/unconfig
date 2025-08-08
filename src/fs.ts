@@ -1,6 +1,6 @@
+import { lstat, stat } from 'node:fs/promises'
 import { dirname, parse, resolve } from 'node:path'
 import process from 'node:process'
-import { lstat, stat } from '@quansync/fs'
 import { quansync } from 'quansync/macro'
 
 export interface FindUpOptions {
