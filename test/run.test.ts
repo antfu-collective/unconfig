@@ -1,6 +1,7 @@
 import type { LoadConfigOptions } from '../src'
 import { resolve } from 'node:path'
-import { expect, it } from 'vitest'
+import { writeFile } from '@quansync/fs'
+import { afterEach, beforeEach, expect, it } from 'vitest'
 import { loadConfig, loadConfigSync } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
@@ -84,4 +85,70 @@ it('array', async () => {
 
   expect(result.config)
     .toMatchSnapshot()
+})
+
+// Test JS config loading with different config files
+it('js-config', async () => {
+  const cwd = resolve(fixtureDir, 'js-cache')
+  const configPath = resolve(cwd, 'test.config.js')
+
+  await writeFile(configPath, `export default {
+  value: 'one',
+}`, 'utf8')
+
+  const result1 = await loadConfig({
+    sources: [{ files: 'test.config' }],
+    cwd,
+  })
+
+  expect(result1.config).toEqual({
+    value: 'one',
+  })
+
+  // Mock hot reload by rewriting the config file
+  await writeFile(configPath, `export default {
+  value: 'two',
+}`, 'utf8')
+
+  const result2 = await loadConfig({
+    sources: [{ files: 'test.config' }],
+    cwd,
+  })
+
+  expect(result2.config).toEqual({
+    value: 'two',
+  })
+})
+
+// Test TS config loading with different config files
+it('ts-config', async () => {
+  const cwd = resolve(fixtureDir, 'js-cache')
+  const configPath = resolve(cwd, 'test.config.ts')
+
+  await writeFile(configPath, `export default {
+  value: 'one',
+}`, 'utf8')
+
+  const result1 = await loadConfig({
+    sources: [{ files: 'test.config' }],
+    cwd,
+  })
+
+  expect(result1.config).toEqual({
+    value: 'one',
+  })
+
+  // Mock hot reload by rewriting the config file
+  await writeFile(configPath, `export default {
+  value: 'two',
+}`, 'utf8')
+
+  const result2 = await loadConfig({
+    sources: [{ files: 'test.config' }],
+    cwd,
+  })
+
+  expect(result2.config).toEqual({
+    value: 'two',
+  })
 })
