@@ -1,0 +1,53 @@
+{
+  "name": "unconfig-core",
+  "type": "module",
+  "version": "7.3.3",
+  "packageManager": "pnpm@10.15.0",
+  "description": "A universal solution for loading configurations.",
+  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/antfu-collective/unconfig#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antfu-collective/unconfig.git",
+    "directory": "core"
+  },
+  "bugs": {
+    "url": "https://github.com/antfu-collective/unconfig/issues"
+  },
+  "keywords": [
+    "config"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "dev": "./src/index.ts",
+      "default": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./package.json": "./package.json"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@quansync/fs": "^0.1.5",
+    "quansync": "^0.2.11"
+  },
+  "devDependencies": {
+    "@antfu/utils": "^9.2.0"
+  },
+  "tsdown": {
+    "entry": "src/index.ts"
+  }
+}

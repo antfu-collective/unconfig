@@ -1,12 +1,11 @@
-import type { Arrayable, Awaitable } from '@antfu/utils'
+import type { Arrayable } from '@antfu/utils'
+import type { CoreLoadConfigSource, CoreSearchOptions, CustomParser } from 'unconfig-core'
 
 export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json', '']
 
 export type BuiltinParsers = 'json' | 'import'
 
-export type CustomParser<T> = (filepath: string) => Awaitable<T | undefined>
-
-export interface LoadConfigSource<T = any> {
+export interface LoadConfigSource<T = any> extends Omit<CoreLoadConfigSource<T>, 'files' | 'parser'> {
   files: Arrayable<string>
 
   /**
@@ -32,28 +31,9 @@ export interface LoadConfigSource<T = any> {
    * return nullish value to skip transformation
    */
   transform?: (code: string, filepath: string) => Promise<string | undefined> | string | undefined
-
-  /**
-   * Skip this source if error occurred on loading
-   *
-   * @default false
-   */
-  skipOnError?: boolean
 }
 
-export interface SearchOptions {
-  /**
-   * Root directory
-   *
-   * @default process.cwd()
-   */
-  cwd?: string
-
-  /**
-   * @default path.parse(cwd).root
-   */
-  stopAt?: string
-
+export interface SearchOptions extends Omit<CoreSearchOptions, 'multiple'> {
   /**
    * Load from multiple sources and merge them
    *

@@ -1,24 +1,27 @@
-import type { QuansyncAwaitableGenerator } from 'quansync'
+import type { QuansyncAwaitableGenerator } from 'quansync/macro'
+import type { CoreLoadConfigSource } from 'unconfig-core'
 import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
 import { createRequire } from 'node:module'
 import { basename, dirname, join } from 'node:path'
-import process from 'node:process'
 import { toArray } from '@antfu/utils'
 import { readFile, unlink, writeFile } from '@quansync/fs'
 import defu from 'defu'
 import { quansync } from 'quansync/macro'
-import { findUp } from './fs'
+import { createConfigCoreLoader } from 'unconfig-core'
 import { interopDefault } from './interop'
 import { defaultExtensions } from './types'
 
 export * from './types'
+export * from 'unconfig-core'
 
 const require = createRequire(import.meta.url)
+
+type BuiltParserResult<T> = [config: T, dependencies?: string[]]
 
 const loadConfigFile = quansync(async <T>(
   filepath: string,
   source: LoadConfigSource<T>,
-): Promise<LoadConfigResult<T> | undefined> => {
+): Promise<BuiltParserResult<T> | undefined> => {
   let config: T | undefined
   let parser = source.parser || 'auto'
 
@@ -101,16 +104,7 @@ const loadConfigFile = quansync(async <T>(
     if (!rewritten)
       return undefined
 
-    return {
-      config: rewritten,
-      sources: [filepath],
-      dependencies,
-    }
-  }
-  catch (e) {
-    if (source.skipOnError)
-      return
-    throw e
+    return [rewritten, dependencies]
   }
   finally {
     if (bundleFilepath !== filepath) {
@@ -121,72 +115,30 @@ const loadConfigFile = quansync(async <T>(
     }
   }
 }) as {
-  <T>(filepath: string, source: LoadConfigSource<T>): QuansyncAwaitableGenerator<LoadConfigResult<T> | undefined>
-  sync: <T>(filepath: string, source: LoadConfigSource<T>) => LoadConfigResult<T> | undefined
-  async: <T>(filepath: string, source: LoadConfigSource<T>) => Promise<LoadConfigResult<T> | undefined>
+  <T>(filepath: string, source: LoadConfigSource<T>): QuansyncAwaitableGenerator<BuiltParserResult<T> | undefined>
+  sync: <T>(filepath: string, source: LoadConfigSource<T>) => BuiltParserResult<T> | undefined
+  async: <T>(filepath: string, source: LoadConfigSource<T>) => Promise<BuiltParserResult<T> | undefined>
 }
 
 export function createConfigLoader<T>(options: LoadConfigOptions) {
-  const sources = toArray(options.sources || [])
-  const {
-    cwd = process.cwd(),
-    merge,
-    defaults,
-  } = options
-
-  const results: LoadConfigResult<T>[] = []
-  let matchedFiles: [LoadConfigSource, string[]][] | undefined
-
-  const findConfigs = quansync(async () => {
-    if (matchedFiles == null)
-      matchedFiles = []
-
-    matchedFiles.length = 0
-    for (const source of sources) {
-      const { extensions = defaultExtensions } = source
-
-      const flatTargets = toArray(source?.files || [])
-        .flatMap(file => !extensions.length
-          ? [file]
-          : extensions.map(i => i ? `${file}.${i}` : file),
-        )
-
-      const files = await findUp(flatTargets, { cwd, stopAt: options.stopAt, multiple: merge })
-
-      matchedFiles.push([source, files])
+  const { merge, defaults, sources, ...coreOptions } = options
+  const coreSources = toArray(sources || []).map((source): CoreLoadConfigSource<BuiltParserResult<T>> => {
+    return {
+      ...source,
+      files: toArray(source.files),
+      extensions: source.extensions || defaultExtensions,
+      parser: filepath => loadConfigFile<T>(filepath, source),
     }
+  })
 
-    return matchedFiles.flatMap(i => i[1])
+  const core = createConfigCoreLoader<BuiltParserResult<T>>({
+    ...coreOptions,
+    multiple: merge,
+    sources: coreSources,
   })
 
   const load = quansync(async (force = false): Promise<LoadConfigResult<T>> => {
-    if (matchedFiles == null || force)
-      await findConfigs()
-
-    for (const [source, files] of matchedFiles!) {
-      if (!files.length)
-        continue
-
-      if (!merge) {
-        const result = await loadConfigFile(files[0], source)
-        if (result) {
-          return {
-            config: applyDefaults(result.config, defaults),
-            sources: result.sources,
-            dependencies: result.dependencies,
-          }
-        }
-      }
-      else {
-        for (const file of files) {
-          const result = await loadConfigFile(file, source)
-          if (result) {
-            results.push(result)
-          }
-        }
-      }
-    }
-
+    const results = await core.load(force)
     if (!results.length) {
       return {
         config: defaults,
@@ -194,16 +146,24 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
       }
     }
 
+    if (!merge) {
+      return {
+        config: results[0].config[0],
+        sources: [results[0].source],
+        dependencies: results[0].config[1],
+      }
+    }
+
     return {
-      config: applyDefaults(...results.map(i => i.config), defaults),
-      sources: results.map(i => i.sources).flat(),
-      dependencies: results.flatMap(i => i.dependencies || []),
+      config: applyDefaults(...results.map(i => i.config[0]), defaults),
+      sources: results.map(i => i.source),
+      dependencies: results.flatMap(i => i.config[1] || []),
     }
   })
 
   return {
     load,
-    findConfigs,
+    findConfigs: core.findConfigs,
   }
 }
 
