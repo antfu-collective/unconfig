@@ -4,7 +4,7 @@ export type CustomParser<T> = (filepath: string) => Awaitable<T | undefined>
 
 export interface CoreLoadConfigSource<T = any> {
   files: Array<string>
-  extensions: string[]
+  extensions?: string[]
 
   /**
    * Parser for loading config,

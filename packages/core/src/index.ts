@@ -45,7 +45,7 @@ export function createConfigCoreLoader<T>(options: CoreLoadConfigOptions): {
       const { extensions } = source
 
       const flatTargets = source.files
-        .flatMap(file => !extensions.length
+        .flatMap(file => !extensions?.length
           ? [file]
           : extensions.map(ext => ext ? `${file}.${ext}` : file),
         )

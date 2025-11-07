@@ -5,7 +5,7 @@ export const defaultExtensions = ['mts', 'cts', 'ts', 'mjs', 'cjs', 'js', 'json'
 
 export type BuiltinParsers = 'json' | 'import'
 
-export interface LoadConfigSource<T = any> extends Omit<CoreLoadConfigSource<T>, 'files' | 'extensions' | 'parser'> {
+export interface LoadConfigSource<T = any> extends Omit<CoreLoadConfigSource<T>, 'files' | 'parser'> {
   files: Arrayable<string>
 
   /**
