@@ -85,3 +85,38 @@ it('array', async () => {
   expect(result.config)
     .toMatchSnapshot()
 })
+
+// Test JS config loading with different config files
+it('js-config', async () => {
+  const cwd = resolve(fixtureDir, 'js-cache')
+  const configPath = resolve(cwd, 'test.config.js')
+  const { writeFile, mkdir } = await import('@quansync/fs')
+
+  await mkdir(cwd, { recursive: true })
+  await writeFile(configPath, `export default {
+  value: 'one',
+}`, 'utf8')
+
+  const result1 = await loadConfig({
+    sources: [{ files: 'test.config' }],
+    cwd,
+  })
+
+  expect(result1.config).toEqual({
+    value: 'one',
+  })
+
+  // Mock hot reload by rewriting the config file
+  await writeFile(configPath, `export default {
+  value: 'two',
+}`, 'utf8')
+
+  const result2 = await loadConfig({
+    sources: [{ files: 'test.config' }],
+    cwd,
+  })
+
+  expect(result2.config).toEqual({
+    value: 'two',
+  })
+})

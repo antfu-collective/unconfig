@@ -79,3 +79,6 @@ dist
 
 # IDE
 .idea
+
+# test
+test/fixtures/js-cache/
