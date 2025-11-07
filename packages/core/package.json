@@ -42,10 +42,7 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "lint": "eslint",
-    "prepublishOnly": "pnpm run build",
-    "release": "bumpp",
-    "test": "vitest"
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "@quansync/fs": "^0.1.5",

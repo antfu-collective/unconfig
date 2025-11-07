@@ -7,32 +7,10 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@quansync/fs':
-        specifier: ^0.1.5
-        version: 0.1.5
-      defu:
-        specifier: ^6.1.4
-        version: 6.1.4
-      jiti:
-        specifier: ^2.5.1
-        version: 2.5.1
-      quansync:
-        specifier: ^0.2.11
-        version: 0.2.11
-      unconfig-core:
-        specifier: workspace:*
-        version: link:core
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^5.2.1
         version: 5.2.1(@vue/compiler-sfc@3.5.13)(eslint@9.33.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.3.0)(jiti@2.5.1)(tsx@4.20.4)(yaml@2.8.1))
-      '@antfu/ni':
-        specifier: ^25.0.0
-        version: 25.0.0
-      '@antfu/utils':
-        specifier: ^9.2.0
-        version: 9.2.0
       '@types/node':
         specifier: ^24.3.0
         version: 24.3.0
@@ -51,17 +29,11 @@ importers:
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
-      unplugin-quansync:
-        specifier: ^0.4.4
-        version: 0.4.4(quansync@0.2.11)
-      vite:
-        specifier: ^7.2.2
-        version: 7.2.2(@types/node@24.3.0)(jiti@2.5.1)(tsx@4.20.4)(yaml@2.8.1)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.0)(jiti@2.5.1)(tsx@4.20.4)(yaml@2.8.1)
 
-  core:
+  packages/core:
     dependencies:
       '@quansync/fs':
         specifier: ^0.1.5
@@ -75,7 +47,32 @@ importers:
     devDependencies:
       '@antfu/utils':
         specifier: ^9.2.0
-        version: 9.2.0
+        version: 9.3.0
+
+  packages/unconfig:
+    dependencies:
+      '@quansync/fs':
+        specifier: ^0.1.5
+        version: 0.1.5
+      defu:
+        specifier: ^6.1.4
+        version: 6.1.4
+      jiti:
+        specifier: ^2.5.1
+        version: 2.5.1
+      quansync:
+        specifier: ^0.2.11
+        version: 0.2.11
+      unconfig-core:
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@antfu/utils':
+        specifier: ^9.2.0
+        version: 9.3.0
+      unplugin-quansync:
+        specifier: ^0.4.4
+        version: 0.4.5(quansync@0.2.11)
 
 packages:
 
@@ -137,12 +134,8 @@ packages:
   '@antfu/install-pkg@1.1.0':
     resolution: {integrity: sha512-MGQsmw10ZyI+EJo45CdSER4zEb+p31LpDAFp2Z3gkSd1yqVZGi0Ebx++YTEMonJy4oChEMLsxZ64j8FH6sSqtQ==}
 
-  '@antfu/ni@25.0.0':
-    resolution: {integrity: sha512-9q/yCljni37pkMr4sPrI3G4jqdIk074+iukc5aFJl7kmDCCsiJrbZ6zKxnES1Gwg+i9RcDZwvktl23puGslmvA==}
-    hasBin: true
-
-  '@antfu/utils@9.2.0':
-    resolution: {integrity: sha512-Oq1d9BGZakE/FyoEtcNeSwM7MpDO2vUBi11RWBZXf75zPsbUVWmUs03EqkRFrcgbXyKTas0BdZWC1wcuSoqSAw==}
+  '@antfu/utils@9.3.0':
+    resolution: {integrity: sha512-9hFT4RauhcUzqOE4f1+frMKLZrgNog5b06I7VmZQV1BkvwvqrbC8EBZf3L1eEL2AKb6rNKjER0sEvJiSP1FXEA==}
 
   '@babel/generator@7.28.5':
     resolution: {integrity: sha512-3EwLFhZ38J4VyIP6WNtt2kUdW9dokXA9Cr4IVIFHuCpZ3H8/YFOl5JjZHisrn1fATPBmKKqXzDFvh9fUwHz6CQ==}
@@ -1331,9 +1324,6 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  fzf@0.5.2:
-    resolution: {integrity: sha512-Tt4kuxLXFKHy8KT40zwsUPUkg1CrsgY25FxA2U/j/0WgEDCk3ddc/zLTCCcbSHX9FcKtLuVaDGtGE/STWC+j3Q==}
-
   get-tsconfig@4.10.1:
     resolution: {integrity: sha512-auHyJ4AgMz7vgS8Hp3N6HXSmlMdUyhSUrfBF16w153rxtLIEOE+HGqaBppczZvnHLqQJfiHotCYpNhl0lUROFQ==}
 
@@ -1497,9 +1487,9 @@ packages:
   loupe@3.2.0:
     resolution: {integrity: sha512-2NCfZcT5VGVNX9mSZIxLRkEAegDGBpuQZBy13desuHeVORmBDyAET4TkJr4SjqQy3A8JDofMN6LpkK8Xcm/dlw==}
 
-  magic-string-ast@1.0.2:
-    resolution: {integrity: sha512-8ngQgLhcT0t3YBdn9CGkZqCYlvwW9pm7aWJwd7AxseVWf1RU8ZHCQvG1mt3N5vvUme+pXTcHB8G/7fE666U8Vw==}
-    engines: {node: '>=20.18.0'}
+  magic-string-ast@1.0.3:
+    resolution: {integrity: sha512-CvkkH1i81zl7mmb94DsRiFeG9V2fR2JeuK8yDgS8oiZSFa++wWLEgZ5ufEOyLHbvSbD1gTRKv9NdX69Rnvr9JA==}
+    engines: {node: '>=20.19.0'}
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
@@ -2034,14 +2024,14 @@ packages:
   unist-util-visit@5.0.0:
     resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
 
-  unplugin-quansync@0.4.4:
-    resolution: {integrity: sha512-bZs7ehsnzu+QaO+iznYpxi+mRIZhBtUuibxDNpo5uicSJ8cBmQlCDDTse+yBgLjk0B0pmiLMkbMsDQnav0OtuA==}
-    engines: {node: '>=20.18.0'}
+  unplugin-quansync@0.4.5:
+    resolution: {integrity: sha512-r5KiXvQNcczce+4NGmBbx2ZT/pAYVdPHG0xJxw4lCTp7hEh5uCb8XC2uJi8CUk1c3mqsp+dED/nqZjFQfqT0kw==}
+    engines: {node: '>=20.19.0'}
     peerDependencies:
       quansync: '>=0.2.2'
 
-  unplugin@2.3.6:
-    resolution: {integrity: sha512-+/MdXl8bLTXI2lJF22gUBeCFqZruEpL/oM9f8wxCuKh9+Mw9qeul3gTqgbKpMeOFlusCzc0s7x2Kax2xKW+FQg==}
+  unplugin@2.3.10:
+    resolution: {integrity: sha512-6NCPkv1ClwH+/BGE9QeoTIl09nuiAt0gS28nn1PvYXsGKRwM2TCbFA2QiilmehPDTXIe684k4rZI1yl3A1PCUw==}
     engines: {node: '>=18.12.0'}
 
   update-browserslist-db@1.1.3:
@@ -2225,14 +2215,7 @@ snapshots:
       package-manager-detector: 1.3.0
       tinyexec: 1.0.1
 
-  '@antfu/ni@25.0.0':
-    dependencies:
-      ansis: 4.1.0
-      fzf: 0.5.2
-      package-manager-detector: 1.3.0
-      tinyexec: 1.0.1
-
-  '@antfu/utils@9.2.0': {}
+  '@antfu/utils@9.3.0': {}
 
   '@babel/generator@7.28.5':
     dependencies:
@@ -3408,8 +3391,6 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  fzf@0.5.2: {}
-
   get-tsconfig@4.10.1:
     dependencies:
       resolve-pkg-maps: 1.0.0
@@ -3540,7 +3521,7 @@ snapshots:
 
   loupe@3.2.0: {}
 
-  magic-string-ast@1.0.2:
+  magic-string-ast@1.0.3:
     dependencies:
       magic-string: 0.30.21
 
@@ -4263,14 +4244,14 @@ snapshots:
       unist-util-is: 6.0.0
       unist-util-visit-parents: 6.0.1
 
-  unplugin-quansync@0.4.4(quansync@0.2.11):
+  unplugin-quansync@0.4.5(quansync@0.2.11):
     dependencies:
       ast-kit: 2.1.3
-      magic-string-ast: 1.0.2
+      magic-string-ast: 1.0.3
       quansync: 0.2.11
-      unplugin: 2.3.6
+      unplugin: 2.3.10
 
-  unplugin@2.3.6:
+  unplugin@2.3.10:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       acorn: 8.15.0
