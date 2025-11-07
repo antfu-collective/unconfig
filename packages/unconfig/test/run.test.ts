@@ -86,10 +86,14 @@ it('array', async () => {
     .toMatchSnapshot()
 })
 
-// Test JS config loading with different config files
-it('js-config', async () => {
-  const cwd = resolve(fixtureDir, 'js-cache')
-  const configPath = resolve(cwd, 'test.config.js')
+// Test config loading with different config files
+it.for([
+  { ext: 'js' },
+  { ext: 'ts' },
+])('$ext-config', async ({ ext }) => {
+  const cwd = resolve(fixtureDir, 'cache')
+  const configFileName = `test-${ext}.config`
+  const configPath = resolve(cwd, `${configFileName}.${ext}`)
   const { writeFile, mkdir } = await import('@quansync/fs')
 
   await mkdir(cwd, { recursive: true })
@@ -98,7 +102,7 @@ it('js-config', async () => {
 }`, 'utf8')
 
   const result1 = await loadConfig({
-    sources: [{ files: 'test.config' }],
+    sources: [{ files: configFileName }],
     cwd,
   })
 
@@ -112,7 +116,7 @@ it('js-config', async () => {
 }`, 'utf8')
 
   const result2 = await loadConfig({
-    sources: [{ files: 'test.config' }],
+    sources: [{ files: configFileName }],
     cwd,
   })
 

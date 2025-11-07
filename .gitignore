@@ -81,4 +81,4 @@ dist
 .idea
 
 # test
-test/fixtures/js-cache/
+test/fixtures/cache/
