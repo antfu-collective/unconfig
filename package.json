@@ -36,7 +36,7 @@
     "dev": "tsdown --watch",
     "lint": "eslint",
     "prepublishOnly": "pnpm run build",
-    "release": "bumpp",
+    "release": "bumpp -r",
     "test": "vitest",
     "typecheck": "tsc"
   },
