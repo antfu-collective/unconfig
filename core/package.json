@@ -10,7 +10,8 @@
   "homepage": "https://github.com/antfu-collective/unconfig#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu-collective/unconfig.git"
+    "url": "git+https://github.com/antfu-collective/unconfig.git",
+    "directory": "core"
   },
   "bugs": {
     "url": "https://github.com/antfu-collective/unconfig/issues"
@@ -52,7 +53,6 @@
     "quansync": "^0.2.11"
   },
   "devDependencies": {
-    "@antfu/utils": "^9.2.0",
-    "typescript": "^5.9.2"
+    "@antfu/utils": "^9.2.0"
   }
 }
