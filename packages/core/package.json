@@ -42,7 +42,6 @@
   "scripts": {},
   "dependencies": {
     "@quansync/fs": "^0.1.5",
-    "jiti": "^2.5.1",
     "quansync": "^0.2.11"
   },
   "devDependencies": {
