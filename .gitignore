@@ -81,4 +81,4 @@ dist
 .idea
 
 # test
-test/fixtures/cache/
+packages/unconfig/test/fixtures/cache

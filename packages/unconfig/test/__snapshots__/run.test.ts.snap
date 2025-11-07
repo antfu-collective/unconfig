@@ -19,6 +19,11 @@ exports[`array 1`] = `
 ]
 `;
 
+exports[`custom parser 1`] = `
+"custom:hello world
+"
+`;
+
 exports[`one > files 1`] = `
 [
   "un.config.ts",

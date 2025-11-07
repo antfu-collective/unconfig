@@ -1,4 +1,5 @@
 import type { LoadConfigOptions } from '../src'
+import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { expect, it } from 'vitest'
 import { loadConfig, loadConfigSync } from '../src'
@@ -87,10 +88,10 @@ it('array', async () => {
 })
 
 // Test config loading with different config files
-it.for([
-  { ext: 'js' },
-  { ext: 'ts' },
-])('$ext-config', async ({ ext }) => {
+it.each([
+  'js',
+  'ts',
+])('config ext: %s', async (ext) => {
   const cwd = resolve(fixtureDir, 'cache')
   const configFileName = `test-${ext}.config`
   const configPath = resolve(cwd, `${configFileName}.${ext}`)
@@ -123,4 +124,16 @@ it.for([
   expect(result2.config).toEqual({
     value: 'two',
   })
+})
+
+it('custom parser', async () => {
+  const cwd = resolve(fixtureDir, 'custom-parser')
+  const result = await loadConfig({
+    sources: { files: 'config.txt', async parser(filepath) {
+      return `custom:${await readFile(filepath, 'utf8')}`
+    } },
+    cwd,
+  })
+
+  expect(result.config).toMatchSnapshot()
 })
