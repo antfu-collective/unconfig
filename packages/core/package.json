@@ -39,11 +39,7 @@
       "./package.json": "./package.json"
     }
   },
-  "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "prepublishOnly": "pnpm run build"
-  },
+  "scripts": {},
   "dependencies": {
     "@quansync/fs": "^0.1.5",
     "jiti": "^2.5.1",

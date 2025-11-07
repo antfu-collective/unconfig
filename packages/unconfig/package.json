@@ -38,10 +38,7 @@
     "*.d.ts",
     "dist"
   ],
-  "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch"
-  },
+  "scripts": {},
   "dependencies": {
     "@quansync/fs": "^0.1.5",
     "defu": "^6.1.4",
