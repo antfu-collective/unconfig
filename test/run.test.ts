@@ -1,7 +1,6 @@
 import type { LoadConfigOptions } from '../src'
 import { resolve } from 'node:path'
-import { writeFile } from '@quansync/fs'
-import { afterEach, beforeEach, expect, it } from 'vitest'
+import { expect, it } from 'vitest'
 import { loadConfig, loadConfigSync } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
@@ -87,17 +86,23 @@ it('array', async () => {
     .toMatchSnapshot()
 })
 
-// Test JS config loading with different config files
-it('js-config', async () => {
-  const cwd = resolve(fixtureDir, 'js-cache')
-  const configPath = resolve(cwd, 'test.config.js')
+// Test config loading with different config files
+it.for([
+  { ext: 'js' },
+  { ext: 'ts' },
+])('$ext-config', async ({ ext }) => {
+  const cwd = resolve(fixtureDir, 'cache')
+  const configFileName = `test-${ext}.config`
+  const configPath = resolve(cwd, `${configFileName}.${ext}`)
+  const { writeFile, mkdir } = await import('@quansync/fs')
 
+  await mkdir(cwd, { recursive: true })
   await writeFile(configPath, `export default {
   value: 'one',
 }`, 'utf8')
 
   const result1 = await loadConfig({
-    sources: [{ files: 'test.config' }],
+    sources: [{ files: configFileName }],
     cwd,
   })
 
@@ -111,40 +116,7 @@ it('js-config', async () => {
 }`, 'utf8')
 
   const result2 = await loadConfig({
-    sources: [{ files: 'test.config' }],
-    cwd,
-  })
-
-  expect(result2.config).toEqual({
-    value: 'two',
-  })
-})
-
-// Test TS config loading with different config files
-it('ts-config', async () => {
-  const cwd = resolve(fixtureDir, 'js-cache')
-  const configPath = resolve(cwd, 'test.config.ts')
-
-  await writeFile(configPath, `export default {
-  value: 'one',
-}`, 'utf8')
-
-  const result1 = await loadConfig({
-    sources: [{ files: 'test.config' }],
-    cwd,
-  })
-
-  expect(result1.config).toEqual({
-    value: 'one',
-  })
-
-  // Mock hot reload by rewriting the config file
-  await writeFile(configPath, `export default {
-  value: 'two',
-}`, 'utf8')
-
-  const result2 = await loadConfig({
-    sources: [{ files: 'test.config' }],
+    sources: [{ files: configFileName }],
     cwd,
   })
 

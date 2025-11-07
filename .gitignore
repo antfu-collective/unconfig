@@ -80,5 +80,4 @@ dist
 # IDE
 .idea
 
-test/fixtures/js-cache/test.config.js
-test/fixtures/js-cache/test.config.ts
+test/fixtures/cache/
