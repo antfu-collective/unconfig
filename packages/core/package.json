@@ -21,10 +21,7 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "dev": "./src/index.ts",
-      "default": "./dist/index.mjs"
-    },
+    ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
   "main": "./dist/index.mjs",
@@ -51,5 +48,8 @@
   },
   "devDependencies": {
     "@antfu/utils": "^9.2.0"
+  },
+  "tsdown": {
+    "entry": "src/index.ts"
   }
 }

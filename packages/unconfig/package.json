@@ -44,8 +44,12 @@
     "unconfig-core": "workspace:*"
   },
   "devDependencies": {
-    "@antfu/utils": "^9.2.0",
-    "unplugin-quansync": "^0.4.4"
-
+    "@antfu/utils": "^9.2.0"
+  },
+  "tsdown": {
+    "entry": [
+      "src/index.ts",
+      "src/presets.ts"
+    ]
   }
 }

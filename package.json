@@ -5,7 +5,7 @@
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "pnpm run -r build",
+    "build": "tsdown",
     "lint": "eslint",
     "release": "bumpp -r",
     "test": "vitest",
@@ -19,6 +19,8 @@
     "lodash-es": "^4.17.21",
     "tsdown": "^0.16.0",
     "typescript": "^5.9.2",
+    "unplugin-quansync": "^0.4.4",
+    "vite": "^7.2.2",
     "vitest": "^3.2.4"
   }
 }

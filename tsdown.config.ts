@@ -2,10 +2,7 @@ import { defineConfig } from 'tsdown'
 import Quansync from 'unplugin-quansync/rolldown'
 
 export default defineConfig({
-  entry: [
-    'src/index.ts',
-    'src/presets.ts',
-  ],
+  workspace: true,
   dts: {
     resolve: ['@antfu/utils'],
   },
