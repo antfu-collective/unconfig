@@ -7,7 +7,9 @@ export default defineConfig({
     resolve: ['@antfu/utils'],
   },
   inlineOnly: ['@antfu/utils'],
-  exports: true,
+  exports: {
+    devExports: 'dev',
+  },
   plugins: [
     Quansync(),
   ],

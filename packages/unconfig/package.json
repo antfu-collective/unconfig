@@ -21,8 +21,14 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./dist/index.mjs",
-    "./presets": "./dist/presets.mjs",
+    ".": {
+      "dev": "./src/index.ts",
+      "default": "./dist/index.mjs"
+    },
+    "./presets": {
+      "dev": "./src/presets.ts",
+      "default": "./dist/presets.mjs"
+    },
     "./package.json": "./package.json"
   },
   "main": "./dist/index.mjs",
@@ -51,5 +57,12 @@
       "src/index.ts",
       "src/presets.ts"
     ]
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./presets": "./dist/presets.mjs",
+      "./package.json": "./package.json"
+    }
   }
 }
