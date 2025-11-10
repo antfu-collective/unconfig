@@ -124,6 +124,94 @@ it.each([
   expect(result2.config).toEqual({
     value: 'two',
   })
+
+  // Test config with default and named exports simultaneously
+  await writeFile(configPath, `export const config = {
+  value: 'three',
+}
+export default config`, 'utf8')
+
+  const result3 = await loadConfig({
+    sources: [{ files: configFileName }],
+    cwd,
+  })
+
+  expect(result3.config).toEqual({
+    value: 'three',
+  })
+
+  // Test config with several named exports only
+  await writeFile(configPath, `export const config1 = {
+  value1: 'config-1',
+}
+export const config2= {
+  value2: 'config-2',
+}`, 'utf8')
+
+  const result4 = await loadConfig({
+    sources: [{ files: configFileName }],
+    cwd,
+  })
+
+  expect(result4.config).toEqual({
+    config1: {
+      value1: 'config-1',
+    },
+    config2: {
+      value2: 'config-2',
+    },
+  })
+
+  // Test config with default and several named exports simultaneously
+  await writeFile(configPath, `export const config1 = {
+  value1: 'config-1',
+}
+export const config2= {
+  value2: 'config-2',
+}
+export const config3= {
+  value3: 'config-3',
+}
+export default config3`, 'utf8')
+
+  const result5 = await loadConfig({
+    sources: [{ files: configFileName }],
+    cwd,
+  })
+
+  expect(result5.config).toEqual({
+    config1: {
+      value1: 'config-1',
+    },
+    config2: {
+      value2: 'config-2',
+    },
+    value3: 'config-3',
+  })
+
+  // Test config when default export property and named export itself have similar names
+  await writeFile(configPath, `export const config1 = {
+  value1: 'config-1',
+}
+export const config2= {
+  value2: 'config-2',
+}
+export const config3= {
+  config1: 'config-3',
+}
+export default config3`, 'utf8')
+
+  const result6 = await loadConfig({
+    sources: [{ files: configFileName }],
+    cwd,
+  })
+
+  expect(result6.config).toEqual({
+    config1: 'config-3',
+    config2: {
+      value2: 'config-2',
+    },
+  })
 })
 
 it('custom parser', async () => {

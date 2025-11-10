@@ -9,15 +9,16 @@ export function interopDefault<T>(mod: T & { default?: T }): T {
 
   for (const key in mod) {
     try {
-      if (!(key in defaultValue)) {
-        Object.defineProperty(defaultValue, key, {
-          enumerable: key !== 'default',
-          configurable: key !== 'default',
-          get() {
-            return (mod as any)[key]
-          },
-        })
-      }
+      if (key in defaultValue || key === 'default' || (mod as any)[key] === defaultValue)
+        continue
+
+      Object.defineProperty(defaultValue, key, {
+        configurable: true,
+        enumerable: true,
+        get() {
+          return (mod as any)[key]
+        },
+      })
     }
     catch {}
   }
