@@ -79,6 +79,3 @@ dist
 
 # IDE
 .idea
-
-# test
-packages/unconfig/test/fixtures/cache

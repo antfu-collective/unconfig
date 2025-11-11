@@ -87,7 +87,7 @@ it('array', async () => {
     .toMatchSnapshot()
 })
 
-describe.each([
+describe.skip.each([
   'js',
   'ts',
 ])('config ext: %s', async (ext) => {

@@ -35,55 +35,28 @@ const loadConfigFile = quansync(async <T>(
     return code
   })
 
-  const clearCache = (cache: any, paths: string[]) => {
-    for (const path of paths) {
-      if (cache[path]) {
-        delete cache[path]
-      }
-    }
-  }
-
   const importModule = quansync({
     sync: () => {
       const { createJiti } = require('jiti') as typeof import('jiti')
-
-      // Clear Node.js require cache for the target file before loading
-      // This is crucial for hot-reload scenarios where file content changes
-      clearCache(require.cache, [bundleFilepath, filepath])
-
-      const jiti = createJiti(filepath, {
+      const jiti = createJiti(import.meta.url, {
         fsCache: false,
         moduleCache: false,
         interopDefault: true,
       })
-
-      // Clear jiti cache for the target file
-      clearCache(jiti.cache, [bundleFilepath, filepath])
-
       config = interopDefault(jiti(bundleFilepath))
-      dependencies = Object.values(jiti.cache || {})
+      dependencies = Object.values(jiti.cache)
         .map(i => i.filename)
         .filter(Boolean)
     },
     async: async () => {
       const { createJiti } = await import('jiti')
-
-      // Clear Node.js require cache for the target file before loading
-      clearCache(require.cache, [bundleFilepath, filepath])
-
-      const jiti = createJiti(filepath, {
+      const jiti = createJiti(import.meta.url, {
         fsCache: false,
         moduleCache: false,
         interopDefault: true,
       })
-
-      // Clear jiti cache for the target file
-      clearCache(jiti.cache, [bundleFilepath, filepath])
-
-      // Use sync jiti() instead of jiti.import() to avoid ESM cache issues
-      // jiti() uses CommonJS require which can be invalidated via require.cache
-      config = interopDefault(jiti(bundleFilepath))
-      dependencies = Object.values(jiti.cache || {})
+      config = interopDefault(await jiti.import(bundleFilepath, { default: true }))
+      dependencies = Object.values(jiti.cache)
         .map(i => i.filename)
         .filter(Boolean)
     },
