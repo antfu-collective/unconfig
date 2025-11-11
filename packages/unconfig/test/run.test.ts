@@ -1,7 +1,7 @@
 import type { LoadConfigOptions } from '../src'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { loadConfig, loadConfigSync } from '../src'
 import { sourcePackageJsonFields, sourcePluginFactory } from '../src/presets'
 
@@ -87,8 +87,7 @@ it('array', async () => {
     .toMatchSnapshot()
 })
 
-// Test config loading with different config files
-it.each([
+describe.each([
   'js',
   'ts',
 ])('config ext: %s', async (ext) => {
@@ -96,121 +95,121 @@ it.each([
   const configFileName = `test-${ext}.config`
   const configPath = resolve(cwd, `${configFileName}.${ext}`)
   const { writeFile, mkdir } = await import('@quansync/fs')
-
   await mkdir(cwd, { recursive: true })
-  await writeFile(configPath, `export default {
-  value: 'one',
-}`, 'utf8')
 
-  const result1 = await loadConfig({
-    sources: [{ files: configFileName }],
-    cwd,
+  it('reload', async () => {
+    await writeFile(configPath, `export default { value: 'one' }`, 'utf8')
+    const result1 = await loadConfig({
+      sources: [{ files: configFileName }],
+      cwd,
+    })
+    expect(result1.config).toEqual({
+      value: 'one',
+    })
+
+    // Mock hot reload by rewriting the config file
+    await writeFile(configPath, `export default {
+      value: 'two',
+    }`, 'utf8')
+    const result2 = await loadConfig({
+      sources: [{ files: configFileName }],
+      cwd,
+    })
+    expect(result2.config).toEqual({
+      value: 'two',
+    })
   })
 
-  expect(result1.config).toEqual({
-    value: 'one',
+  it('default and named exports', async () => {
+    await writeFile(configPath, `export const config = {
+      value: 'three',
+    }
+    export default config`, 'utf8')
+
+    const result = await loadConfig({
+      sources: [{ files: configFileName }],
+      cwd,
+    })
+
+    expect(result.config).toEqual({
+      value: 'three',
+    })
   })
 
-  // Mock hot reload by rewriting the config file
-  await writeFile(configPath, `export default {
-  value: 'two',
-}`, 'utf8')
-
-  const result2 = await loadConfig({
-    sources: [{ files: configFileName }],
-    cwd,
-  })
-
-  expect(result2.config).toEqual({
-    value: 'two',
-  })
-
-  // Test config with default and named exports simultaneously
-  await writeFile(configPath, `export const config = {
-  value: 'three',
-}
-export default config`, 'utf8')
-
-  const result3 = await loadConfig({
-    sources: [{ files: configFileName }],
-    cwd,
-  })
-
-  expect(result3.config).toEqual({
-    value: 'three',
-  })
-
-  // Test config with several named exports only
-  await writeFile(configPath, `export const config1 = {
-  value1: 'config-1',
-}
-export const config2= {
-  value2: 'config-2',
-}`, 'utf8')
-
-  const result4 = await loadConfig({
-    sources: [{ files: configFileName }],
-    cwd,
-  })
-
-  expect(result4.config).toEqual({
-    config1: {
+  it('named exports only', async () => {
+    await writeFile(configPath, `export const config1 = {
       value1: 'config-1',
-    },
-    config2: {
+    }
+    export const config2 = {
       value2: 'config-2',
-    },
+    }`, 'utf8')
+
+    const result = await loadConfig({
+      sources: [{ files: configFileName }],
+      cwd,
+    })
+
+    expect(result.config).toEqual({
+      config1: {
+        value1: 'config-1',
+      },
+      config2: {
+        value2: 'config-2',
+      },
+    })
   })
 
-  // Test config with default and several named exports simultaneously
-  await writeFile(configPath, `export const config1 = {
-  value1: 'config-1',
+  it('default and several named exports', async () => {
+    await writeFile(configPath, `export const config1 = {
+value1: 'config-1',
 }
-export const config2= {
-  value2: 'config-2',
+export const config2 = {
+value2: 'config-2',
 }
-export const config3= {
-  value3: 'config-3',
+export const config3 = {
+value3: 'config-3',
 }
 export default config3`, 'utf8')
 
-  const result5 = await loadConfig({
-    sources: [{ files: configFileName }],
-    cwd,
+    const result = await loadConfig({
+      sources: [{ files: configFileName }],
+      cwd,
+    })
+
+    expect(result.config).toEqual({
+      config1: {
+        value1: 'config-1',
+      },
+      config2: {
+        value2: 'config-2',
+      },
+      value3: 'config-3',
+    })
   })
 
-  expect(result5.config).toEqual({
-    config1: {
-      value1: 'config-1',
-    },
-    config2: {
-      value2: 'config-2',
-    },
-    value3: 'config-3',
-  })
-
-  // Test config when default export property and named export itself have similar names
-  await writeFile(configPath, `export const config1 = {
-  value1: 'config-1',
+  it('similar export names', async () => {
+    await writeFile(configPath, `export const config1 = {
+value1: 'config-1',
 }
-export const config2= {
-  value2: 'config-2',
+export const config2 = {
+value2: 'config-2',
 }
-export const config3= {
+export const config3 = {
   config1: 'config-3',
 }
 export default config3`, 'utf8')
 
-  const result6 = await loadConfig({
-    sources: [{ files: configFileName }],
-    cwd,
-  })
+    const result6 = await loadConfig({
+      sources: [{ files: configFileName }],
+      cwd,
+    })
 
-  expect(result6.config).toEqual({
-    config1: 'config-3',
-    config2: {
-      value2: 'config-2',
-    },
+    expect(result6.config).toEqual({
+      config1: 'config-3',
+      config2: {
+        value2: 'config-2',
+      },
+    })
   })
 })
 
