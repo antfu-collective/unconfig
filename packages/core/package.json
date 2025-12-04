@@ -41,11 +41,11 @@
   },
   "scripts": {},
   "dependencies": {
-    "@quansync/fs": "^1.0.0",
-    "quansync": "^1.0.0"
+    "@quansync/fs": "catalog:prod",
+    "quansync": "catalog:prod"
   },
   "devDependencies": {
-    "@antfu/utils": "^9.3.0"
+    "@antfu/utils": "catalog:"
   },
   "tsdown": {
     "entry": "src/index.ts"

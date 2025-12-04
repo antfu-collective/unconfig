@@ -1,6 +1,35 @@
+catalogMode: prefer
+cleanupUnusedCatalogs: true
+shellEmulator: true
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  - chokidar@4.0.3
+
 packages:
   - packages/*
   - playground
   - examples/*
+
+catalog:
+  '@antfu/eslint-config': ^6.4.1
+  '@antfu/utils': ^9.3.0
+  '@types/node': ^24.10.1
+  '@typescript/native-preview': 7.0.0-dev.20251204.1
+  bumpp: ^10.3.2
+  eslint: ^9.39.1
+  lodash-es: ^4.17.21
+  tsdown: ^0.17.0
+  typescript: ^5.9.3
+  unplugin-quansync: ^0.5.0
+  unplugin-unused: ^0.5.6
+  vite: ^7.2.6
+  vitest: ^4.0.15
+
+catalogs:
+  prod:
+    '@quansync/fs': ^1.0.0
+    defu: ^6.1.4
+    jiti: ^2.6.1
+    quansync: ^1.0.0
 onlyBuiltDependencies:
   - esbuild

@@ -40,14 +40,14 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@quansync/fs": "^1.0.0",
-    "defu": "^6.1.4",
-    "jiti": "^2.6.1",
-    "quansync": "^1.0.0",
+    "@quansync/fs": "catalog:prod",
+    "defu": "catalog:prod",
+    "jiti": "catalog:prod",
+    "quansync": "catalog:prod",
     "unconfig-core": "workspace:*"
   },
   "devDependencies": {
-    "@antfu/utils": "^9.3.0"
+    "@antfu/utils": "catalog:"
   },
   "tsdown": {
     "entry": [

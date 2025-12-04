@@ -12,17 +12,17 @@
     "typecheck": "tsgo"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.4.1",
-    "@types/node": "^24.10.1",
-    "@typescript/native-preview": "7.0.0-dev.20251204.1",
-    "bumpp": "^10.3.2",
-    "eslint": "^9.39.1",
-    "lodash-es": "^4.17.21",
-    "tsdown": "^0.17.0",
-    "typescript": "^5.9.3",
-    "unplugin-quansync": "^0.5.0",
-    "unplugin-unused": "^0.5.6",
-    "vite": "^7.2.6",
-    "vitest": "^4.0.15"
+    "@antfu/eslint-config": "catalog:",
+    "@types/node": "catalog:",
+    "@typescript/native-preview": "catalog:",
+    "bumpp": "catalog:",
+    "eslint": "catalog:",
+    "lodash-es": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-quansync": "catalog:",
+    "unplugin-unused": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
   }
 }
