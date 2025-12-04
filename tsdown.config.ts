@@ -4,6 +4,7 @@ import Quansync from 'unplugin-quansync/rolldown'
 export default defineConfig({
   workspace: true,
   dts: {
+    tsgo: true,
     resolve: ['@antfu/utils'],
   },
   inlineOnly: ['@antfu/utils'],
