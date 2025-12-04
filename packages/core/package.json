@@ -1,7 +1,7 @@
 {
   "name": "unconfig-core",
   "type": "module",
-  "version": "7.4.1",
+  "version": "7.4.2",
   "packageManager": "pnpm@10.24.0",
   "description": "A universal solution for loading configurations.",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
