@@ -11,19 +11,19 @@ packages:
   - examples/*
 
 catalog:
-  '@antfu/eslint-config': ^6.4.1
+  '@antfu/eslint-config': ^7.4.3
   '@antfu/utils': ^9.3.0
-  '@types/node': ^24.10.1
+  '@types/node': ^25.2.3
   '@typescript/native-preview': 7.0.0-dev.20251204.1
-  bumpp: ^10.3.2
-  eslint: ^9.39.1
-  lodash-es: ^4.17.21
-  tsdown: ^0.17.0
+  bumpp: ^10.4.1
+  eslint: ^10.0.0
+  lodash-es: ^4.17.23
+  tsdown: ^0.20.3
   typescript: ^5.9.3
-  unplugin-quansync: ^0.5.0
-  unplugin-unused: ^0.5.6
-  vite: ^7.2.6
-  vitest: ^4.0.15
+  unplugin-quansync: ^0.5.1
+  unplugin-unused: ^0.5.7
+  vite: ^7.3.1
+  vitest: ^4.0.18
 
 catalogs:
   prod:
