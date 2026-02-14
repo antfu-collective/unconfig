@@ -51,6 +51,18 @@ exports[`one 1`] = `
 }
 `;
 
+exports[`source plugin factory skips without target module > no-target 1`] = `
+[
+  "no-target.js",
+]
+`;
+
+exports[`source plugin factory skips without target module 1`] = `
+{
+  "default": undefined,
+}
+`;
+
 exports[`two > files 1`] = `
 [
   "lodash-es.js",

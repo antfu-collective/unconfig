@@ -87,6 +87,23 @@ it('array', async () => {
     .toMatchSnapshot()
 })
 
+it('source plugin factory skips without target module', async () => {
+  const cwd = resolve(fixtureDir, 'no-target')
+  const result = await loadConfig({
+    sources: [
+      sourcePluginFactory({
+        targetModule: 'stub',
+        files: 'no-target.js',
+        extensions: [],
+      }),
+    ],
+    cwd,
+  })
+
+  expect(result.sources.map(i => i.slice(cwd.length + 1))).toMatchSnapshot('no-target')
+  expect(result.config).toMatchSnapshot()
+})
+
 describe.skip.each([
   'js',
   'ts',
