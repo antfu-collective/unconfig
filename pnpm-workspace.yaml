@@ -1,9 +1,17 @@
 catalogMode: prefer
 cleanupUnusedCatalogs: true
-shellEmulator: true
+
+minimumReleaseAgeExcludePrune: true
+minimumReleaseAgeExclude:
+  - '@vitest/mocker@5.0.4'
+  - '@vitest/spy@5.0.4'
+  - unplugin-quansync@0.6.2
+  - vitest@5.0.4
+
 trustPolicy: no-downgrade
-trustPolicyExclude:
-  - chokidar@4.0.3
+trustPolicyExcludePrune: true
+trustPolicyIgnoreAfter: 1440 # 1 day
+shellEmulator: true
 
 packages:
   - packages/*
@@ -11,25 +19,23 @@ packages:
   - examples/*
 
 catalog:
-  '@antfu/eslint-config': ^7.4.3
+  '@antfu/eslint-config': ^9.5.1
   '@antfu/utils': ^9.3.0
-  '@types/node': ^25.2.3
-  '@typescript/native-preview': 7.0.0-dev.20251204.1
-  bumpp: ^10.4.1
-  eslint: ^10.0.0
-  lodash-es: ^4.17.23
-  tsdown: ^0.20.3
+  '@types/node': ^26.6.5
+  '@typescript/native-preview': 7.0.0-dev.20260707.2
+  bumpp: ^12.3.0
+  eslint: ^10.12.0
+  lodash-es: ^4.18.1
+  tsdown: ^0.23.1
   typescript: ^5.9.3
-  unplugin-quansync: ^0.5.1
-  unplugin-unused: ^0.5.7
-  vite: ^7.3.1
-  vitest: ^4.0.18
+  unplugin-quansync: ^0.6.2
+  unplugin-unused: ^0.6.0
+  vite: ^8.3.4
+  vitest: ^5.0.4
 
 catalogs:
   prod:
-    '@quansync/fs': ^1.0.0
-    defu: ^6.1.4
-    jiti: ^2.6.1
+    '@quansync/fs': ^1.1.0
+    defu: ^6.1.7
+    jiti: ^2.7.0
     quansync: ^1.0.0
-onlyBuiltDependencies:
-  - esbuild

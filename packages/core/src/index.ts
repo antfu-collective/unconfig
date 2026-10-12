@@ -37,9 +37,7 @@ export function createConfigCoreLoader<T>(options: CoreLoadConfigOptions): {
   let matchedFiles: [CoreLoadConfigSource, string[]][] | undefined
 
   const findConfigs = quansync(async () => {
-    if (matchedFiles == null)
-      matchedFiles = []
-
+    matchedFiles ??= []
     matchedFiles.length = 0
     for (const source of sources) {
       const { extensions } = source

@@ -3,11 +3,12 @@ import Quansync from 'unplugin-quansync/rolldown'
 
 export default defineConfig({
   workspace: true,
-  dts: {
-    tsgo: true,
-    resolve: ['@antfu/utils'],
+  deps: {
+    onlyBundle: ['@antfu/utils'],
   },
-  inlineOnly: ['@antfu/utils'],
+  dts: {
+    generator: 'tsgo',
+  },
   exports: {
     devExports: 'dev',
   },

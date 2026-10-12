@@ -2,7 +2,7 @@
   "name": "unconfig-core",
   "type": "module",
   "version": "7.5.0",
-  "packageManager": "pnpm@10.29.3",
+  "packageManager": "pnpm@12.11.2",
   "description": "A universal solution for loading configurations.",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -47,5 +47,8 @@
   },
   "tsdown": {
     "entry": "src/index.ts"
+  },
+  "inlinedDependencies": {
+    "@antfu/utils": "9.3.0"
   }
 }

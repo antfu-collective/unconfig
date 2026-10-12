@@ -30,9 +30,7 @@ const loadConfigFile = quansync(async <T>(
   let dependencies: string[] | undefined
 
   const read = quansync(async () => {
-    if (code == null)
-      code = await readFile(filepath, 'utf8')
-    return code
+    return code ?? await readFile(filepath, 'utf8')
   })
 
   const importModule = quansync({
