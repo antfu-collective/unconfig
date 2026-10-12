@@ -9,7 +9,7 @@
     "lint": "eslint",
     "release": "bumpp -r",
     "test": "vitest",
-    "typecheck": "tsgo"
+    "typecheck": "tsc"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
