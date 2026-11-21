@@ -1,4 +1,4 @@
-import type { QuansyncAwaitableGenerator } from 'quansync/macro'
+import type { QuansyncAwaitableGenerator, QuansyncFn } from 'quansync/macro'
 import type { CoreLoadConfigSource } from 'unconfig-core'
 import type { LoadConfigOptions, LoadConfigResult, LoadConfigSource } from './types'
 import { createRequire } from 'node:module'
@@ -118,7 +118,10 @@ const loadConfigFile = quansync(async <T>(
   async: <T>(filepath: string, source: LoadConfigSource<T>) => Promise<BuiltParserResult<T> | undefined>
 }
 
-export function createConfigLoader<T>(options: LoadConfigOptions) {
+export function createConfigLoader<T>(options: LoadConfigOptions): {
+  load: QuansyncFn<LoadConfigResult<T>, [force?: boolean | undefined]>
+  findConfigs: QuansyncFn<string[], []>
+} {
   const { merge, defaults, sources, ...coreOptions } = options
   const coreSources = toArray(sources || []).map((source): CoreLoadConfigSource<BuiltParserResult<T>> => {
     return {
@@ -135,7 +138,7 @@ export function createConfigLoader<T>(options: LoadConfigOptions) {
     sources: coreSources,
   })
 
-  const load = quansync(async (force = false): Promise<LoadConfigResult<T>> => {
+  const load = quansync(async (force: boolean = false): Promise<LoadConfigResult<T>> => {
     const results = await core.load(force)
     if (!results.length) {
       return {
