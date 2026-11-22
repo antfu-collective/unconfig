@@ -11,3 +11,5 @@ permissions: {}
 jobs:
   unit-test:
     uses: sxzz/workflows/.github/workflows/unit-test.yml@main
+    with:
+      build: pnpm run build && pnpm exec tsc -p packages/unconfig/test/types
